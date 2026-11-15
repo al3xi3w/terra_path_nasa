@@ -404,6 +404,8 @@ h3.section { margin: 22px 0 10px; font-size: 19px; }
   transform: scaleX(0); transition: transform .3s var(--ease);
 }
 .tabbar button[aria-current="page"] { color: var(--brand); }
+.tabbar button.off { color: #9AA79F; opacity: .55; cursor: default; }
+.tabbar button.off:active { transform: none; }
 .tabbar button[aria-current="page"]::before { transform: scaleX(1); }
 body.has-nav main { padding-bottom: 240px; }
 body.has-nav .btn-main { bottom: calc(66px + env(safe-area-inset-bottom)); }

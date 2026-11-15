@@ -1,7 +1,7 @@
 // Guarda la app en el teléfono la primera vez. Las teselas del mapa que el usuario ya vio
 // también se guardan (solo las vistas, nunca una descarga masiva: política de uso de OpenStreetMap).
 // Cambia VERSION cada vez que se regeneren los datos (scripts/build_app.py lo hace solo).
-const VERSION = 'terrapath-d59bb6dd7e';
+const VERSION = 'terrapath-fc8f88cbab';
 const TILES = 'terrapath-tiles';
 const MAX_TILES = 400;
 const FILES = ['./', 'index.html', 'styles.css', 'app.js', 'i18n.js', 'i18n_more.js', 'data/app_data.js', 'manifest.webmanifest', 'icon.svg',

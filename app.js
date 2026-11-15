@@ -879,6 +879,10 @@
 
   function nav() {
     return `<nav class="tabbar" aria-label="${esc(t('app_name'))}">${NAV.map(([v, l, ico]) => {
+      // "My field" queda deshabilitado (gris claro, semitransparente) hasta que se elija una rotación.
+      if (v === 'farm' && !state.farm) {
+        return `<button class="off" aria-disabled="true">${icon(ico, '#9AA79F', 24)}<span>${esc(t(l))}</span></button>`;
+      }
       const on = state.view === v || (v === 'routes' && ['why', 'calendar'].includes(state.view));
       return `<button data-nav="${v}" aria-current="${on ? 'page' : 'false'}">${icon(ico, on ? '#00733A' : '#4A6354', 24)}<span>${esc(t(l))}</span></button>`;
     }).join('')}</nav>`;
