@@ -510,8 +510,9 @@
       main = `<div class="plant-card"><h2>${esc(t('sow', { crop: cropName(k), month: monthName(months[0]) }))}</h2>
         <p>${esc(t('harvest', { crop: cropName(k), month: monthName(months[months.length - 1]) }))}</p></div>`;
       grid = `<div class="cal" role="img" aria-label="${esc(t('cal_title'))}">${t('months').map((m, i) => {
+        // Todos los meses de la campaña se ven igual: fondo verde, borde y el cultivo debajo.
         const mo = i + 1, grow = months.includes(mo), sow = mo === months[0];
-        return `<div class="${grow ? 'grow' : ''} ${sow ? 'sow' : ''}">${esc(cap(m))}${sow ? `<small>${esc(cap(cropName(k)))}</small>` : ''}${frostMonths.has(mo) ? `<small class="fr">${icon('snow', '#2F6F95', 14)} ${esc(t('frost_word'))}</small>` : ''}</div>`;
+        return `<div class="${grow ? 'grow' : ''} ${sow ? 'sow' : ''}"${grow ? ` style="--k:${months.indexOf(mo)}"` : ''}>${esc(cap(m))}${grow ? `<small>${esc(cap(cropName(k)))}</small>` : ''}${frostMonths.has(mo) ? `<small class="fr">${icon('snow', '#2F6F95', 14)} ${esc(t('frost_word'))}</small>` : ''}</div>`;
       }).join('')}</div>`;
     }
     return `${back('to-why')}

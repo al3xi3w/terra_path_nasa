@@ -326,8 +326,8 @@ h3.section { margin: 22px 0 10px; font-size: 19px; }
   min-height: 62px; border-radius: 12px; background: var(--card); border: 1px solid #E1E5E3;
   display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 17px; font-weight: 800;
 }
-.cal div.grow { border: 2px solid var(--brand); }
-.cal div.sow { background: var(--green-50); }
+.cal div.grow { border: 2px solid var(--brand); background: var(--green-50); }
+.view.enter .cal div.grow { animation: pop .4s var(--ease) both; animation-delay: calc(.25s + var(--k, 0) * 80ms); }
 .cal div small { font-weight: 400; font-size: 13px; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 2px; }
 .facts { list-style: none; padding: 0; margin: 4px 0 16px; }
 .facts li { display: flex; gap: 10px; padding: 4px 0; align-items: flex-start; font-size: 18px; color: var(--ink-2); }
