@@ -1,203 +1,152 @@
-# Terrapath
+# TerraPath
 
-Qué sembrar en tus próximas campañas. Un motor de rotación de cultivos que funciona en cualquier coordenada,
-construido solo con datos abiertos de la NASA y la FAO, y una app web para agricultores.
+**A GPS for crop rotation, powered by NASA Earth data.**
 
-- **Motor** (`src/`, `scripts/`): clima diario NASA POWER, Kc FAO-56, límites de EcoCrop, altitud SRTM y lluvia GPM IMERG.
-  Propone rutas de 3 campañas puntuadas en Agua, Tierra y Cosecha segura.
-- **App** (`app/`): web sin servidor. Ver [app/README.md](app/README.md).
-- **Recorrido paso a paso** (`notebooks/terrapath_recorrido.ipynb`): el motor real, de principio a fin, con sus resultados.
-- **Pruebas** (`tests/`): `.venv/bin/python -m pytest -q` (las de la app usan Node).
+NASA Space Apps Challenge 2026 · Piura, Peru · Challenge: *Field Shift: Adapting Farms with NASA Data*
 
-## Los datos no están en el repositorio
-
-`data/` y `app/data/` están en `.gitignore` (≈1,3 GB, de terceros). En **[DATA.md](DATA.md)** está de dónde sale cada
-archivo, cómo descargarlo (algunos piden una cuenta gratuita de NASA Earthdata) y el orden para regenerar todo.
-Sin esas carpetas, el código está completo pero el motor, la app y la mayoría de las pruebas no tienen datos con qué correr.
-
-```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-# descargar y regenerar los datos: ver DATA.md
-.venv/bin/python scripts/build_app.py
-.venv/bin/python -m http.server 8000 -d app   # abrir http://localhost:8000
-```
-
-Reglas del proyecto: no se inventan datos (lo que falta queda nulo y se reporta), un faltante nunca cuenta como cero
-ni como favorable, y toda salida guarda su procedencia (fuente, archivo, SHA-256, variable, unidad, período y ubicación).
+**Try the app:** https://al3xi3w.github.io/terra_path_nasa/ (works on a phone, and offline after the first visit)
 
 ---
 
-*Lo que sigue documenta la etapa anterior del proyecto (Field Shift: auditoría y preparación de datos).*
+## What TerraPath does
 
-## Field Shift — preparación de datos para ML
+A farmer taps a plot on a map and answers two short questions: what grows there today, and what matters most to them (saving water, protecting the soil or a reliable harvest). TerraPath then proposes **three crop-rotation routes for the next three seasons**. Each route is scored from 0 to 100 on water, soil and reliable harvest, and every score comes with its reasons in plain language.
 
-Pipeline local para NASA Space Apps Challenge. La auditoría vigente está en [reports/local_audit.md](reports/local_audit.md); los informes anteriores conservan contexto histórico y no describen por sí solos el estado actual.
+| Tap your plot | Compare three routes | Why this route? |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/1_map_and_plot.png" width="240" alt="Map with the plot marked in Huancabamba, Piura"> | <img src="docs/screenshots/2_three_routes.png" width="240" alt="Recommended routes with water, soil and reliable-harvest scores"> | <img src="docs/screenshots/3_why_this_route.png" width="240" alt="Evidence: frost by month and rainfall against crop water needs"> |
+| Map, nearest site with data and its altitude | Water, soil and reliable-harvest scores | Frost by month, rainfall against crop needs |
 
-## Ejecución reproducible y sin descargas de datos
+*Screens from the working app, with real data for Huancabamba, Piura (−5.24, −79.45).*
+
+## Why it matters
+
+Farmers plan with yesterday's climate. Frost, late rains and El Niño years move the planting window from one season to the next, yet many smallholders repeat the same crop out of habit, wearing out soil and water. Satellite data is free, but it arrives as rasters and technical terms, not as a decision in the farmer's own language.
+
+TerraPath's answer to the challenge is to **change the rotation, not just the sowing date**. It answers the question every farmer asks before sowing: *"What should I plant next, so my field still feeds me in three seasons?"*
+
+## How it works
+
+The engine turns NASA and FAO data into routes in five steps:
+
+1. **Locate the plot.** Altitude and slope come from NASA SRTM at 30 m. If the plot sits in rugged mountains, the app warns that the climate grid may not match the field.
+2. **Read the climate.** NASA POWER provides 44 years (1981–2024) of daily rain, frost and heat, plus the inputs for FAO-56 reference evapotranspiration (ET₀).
+3. **Build every rotation.** A 16-crop library is filtered by FAO EcoCrop climate and altitude limits; the engine then lists every three-season sequence that passes (204 in Huancabamba).
+4. **Score each rotation from 0 to 100.**
+   - *Water:* crop demand (FAO-56 Kc × ET₀) against rainfall.
+   - *Soil:* legumes, changes of botanical family between seasons, cover crops.
+   - *Reliable harvest:* frost below each crop's lethal temperature, rainfall variability and dry years.
+5. **Pick three routes.** The engine keeps the Pareto front and shows the best route for the farmer's priority, compared with what they grow today.
+
+**Honest by design.** Every number can be traced to its source file and SHA-256 hash. A missing input is shown as "—" and reported as unknown; it is never treated as zero or as favourable.
+
+## Data
+
+| Source | What we use it for | Status |
+|---|---|---|
+| NASA POWER (daily) | Rain, frost, temperature, ET₀ inputs | Used · 6 sites · 1981–2024 |
+| NASA SRTM 30 m | Plot altitude and slope, mountain warning | Used · 5 tiles · all 6 sites |
+| FAO-56 Kc · FAO EcoCrop | Crop water demand, frost and climate limits | Used · 16-crop library |
+| FAOSTAT | Typical monoculture for the backtest | Used · baseline only |
+| GPM IMERG V07 (monthly) | Rainfall 2001–2025 at every site | Context · not in scores yet |
+| FAO GAEZ | Suitability layers | Context · legend unverified |
+| SMAP · MODIS | Soil moisture, vegetation | Not used · files were empty |
+| Sentinel-2 NDVI | Vegetation greenness | Not used · 0 of 403 values pass quality checks |
+
+The six sites are Huancabamba, Piura sur and Piura norte (Peru), central Iowa (US), Nakuru (Kenya) and California's Central Valley (US). The data itself is not stored in this repository (about 1.3 GB, from third parties); **[DATA.md](DATA.md)** explains where each file comes from and how to download and regenerate it.
+
+## Results
+
+Routes were chosen with 1981–2015 data only and then replayed on 2016–2024 (nine years). The baseline was maize grown every year, the crop with the largest harvested area in each country according to FAOSTAT.
+
+| Site | Route | Maize every year | Difference |
+|---|---:|---:|---:|
+| Huancabamba, Piura (PE) | 942 mm | 1,138 mm | −17% |
+| Piura sur (PE) | 1,691 mm | 1,808 mm | −6% |
+| Iowa central (US) | 1,494 mm | 1,870 mm | −20% |
+| Nakuru (KE) | 1,208 mm | 1,773 mm | −32% |
+
+*Total water deficit 2016–2024, max(0, Kc × ET₀ − rain).* At all four sites that produce routes, the route needed less water than maize. The routes do not change when the weight on water moves from 20% to 80%. Details: [reports/backtesting.md](reports/backtesting.md) and [reports/sensibilidad_pesos.md](reports/sensibilidad_pesos.md).
+
+## Limits we state openly
+
+- **Same top route at four sites.** Alfalfa › barley › potato wins in Piura, Iowa and Kenya alike: the 16-crop library and a single sowing window cannot yet tell those climates apart. Quinoa and local varieties are not in the library.
+- **Two rainfall sources disagree in Piura.** GPM IMERG gives about twice NASA POWER's annual rain (834 vs 467 mm in Huancabamba). Scores use POWER until station data settles which is right.
+- **Two sites without routes.** In Piura norte, SRTM places the plot at 2,864 m but the climate grid at 878 m, so no rotation passes. In California, water demand is unknown for the eligible crops.
+- **Gaps in crop data.** Eight of the 16 crops lack a verified FAO-56 Kc and six lack a lethal frost temperature; those scores show as unknown.
+- **Not field-validated.** There are no plot-level yield, soil or irrigation records. TerraPath screens options; an agronomist confirms them.
+- **Six sites only.** A plot more than 30 km from a site gets "no data for this area yet" rather than a borrowed answer.
+
+## The app
+
+A web app that installs on a phone (Android and iPhone) and works without internet after the first visit. It has no server: the account and the farmer's answers stay on the phone, and the 4-digit PIN is stored only as a salted SHA-256 hash.
+
+- **Onboarding in three steps:** where the field is (map, GPS or list of sites), what grows there now, and what matters most.
+- **Routes:** up to three routes with score bars, the farmer's current rotation for comparison, and a side-by-side chart of all routes.
+- **Why this route?:** reasons in plain language, frost days per month, rainfall against crop needs, and the 2016–2024 comparison with maize.
+- **When to plant:** sowing and harvest month for each season, typical first frost, and a downloadable calendar reminder (.ics).
+- **Home and My field:** the crop growing now, this week's tasks, a normal-year view by week, month (daily rainfall calendar) and year (the three seasons in sequence). All climate is labelled "typical conditions, not a forecast", with a reminder to check with a farm adviser.
+- **Languages:** English and Spanish are complete. Portuguese, French, Kiswahili, Hindi, Chinese and Arabic (right to left) are machine-drafted, and the app says so on screen. Quechua and Aymara are shown in English until native speakers of the local variety write them.
+- **Assistant button:** a placeholder for a future feature; today it only shows "Coming soon".
+
+The design follows the team's Figma prototype ([prototipo/](prototipo/)). Map tiles come from OpenStreetMap through Leaflet, with no Google services.
+
+## Run it locally
+
+Requires Python 3 (developed with 3.14) and, for the app tests, Node.js.
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python scripts/audit_local.py --as-of 2026-11-14
-# Alternativa equivalente para la fecha de corte predeterminada:
-.venv/bin/python scripts/run_pipeline.py audit
+
+# 1. Download and regenerate the data (order and credentials in DATA.md)
+# 2. Export the engine results for the app
+.venv/bin/python scripts/build_app.py
+
+# 3. Open the app at http://localhost:8000
+.venv/bin/python -m http.server 8000 -d app
+
+# 4. Run the tests
 .venv/bin/python -m pytest -q
 ```
 
-La instalación obtiene dependencias de software, no datasets. La auditoría no necesita credenciales ni red. No ejecutar `run_pipeline.py` sin operación: el comando histórico por defecto `all` incluye adquisición. Tampoco ejecutar `download`, `extend`, `batch*`, `earth`, `power` o `recuperar_gpm.py` para esta etapa.
+The test suite currently reports **195 passed and 3 skipped** (the skipped tests need the SMAP, MODIS and half-hourly IMERG files, which came back empty).
 
-`src/audit.py` reutiliza `digest`, `decode_array`, `read_power_csv`, `Pipeline.local_environment` y `Pipeline.local_agronomy`. Lee originales exclusivamente; escribe derivados y metadatos. La fecha de corte es explícita para que el indicador de mes incompleto sea reproducible. No hay entrenamiento, frontend, imputación ni correspondencias de cultivos inventadas.
+The published app is the `app/` folder served from the `gh-pages` branch through GitHub Pages. To publish a new version, run `scripts/build_app.py` and copy `app/` (including `app/data/`) to that branch.
 
-## Disponibilidad comprobada
+Direct links to a screen are useful for demos, for example:
+`https://al3xi3w.github.io/terra_path_nasa/#user=Ana&view=routes&pilot=piura_1&care=water&now=potato`
+(see [app/README.md](app/README.md) for all options).
 
-- **GPM/IMERG mensual V07B:** 57 archivos, enero 2021–septiembre 2025, sin meses duplicados. Faltan octubre–diciembre de 2025 respecto del intervalo configurado. Se comprueban cabecera, producto, versión, fechas/época/calendario, duración, unidades, dimensiones, centros/límites y todas las celdas de cinco variables, por bloques. Tasas en mm/hr; no acumulaciones. La grilla tiene 3600 × 1800 celdas, a 0.1°. Cobertura de meses no equivale a datos válidos en cada píxel. Índice QA sin umbral inventado: sus valores no son porcentajes ni están limitados a uno.
-- **Sentinel-2 exportado:** 426 filas, seis pilotos, enero 2021–noviembre 2026. 23 filas sin índices; noviembre 2026 incompleto al corte. Los 403 registros NDVI presentes tienen estadísticas inconsistentes, 27 con algún valor NDVI fuera de [-1,1]. Ninguna fila NDVI pasa el cribado conservador. Se preservan todos los valores y flags. Falta el script de exportación para saber si mínimos/percentiles representan soportes distintos; no se presume que los números sean reparables.
-- **USDA NASS:** 392 rendimientos anuales, 1945–2021, trigo/maíz y diez variantes de `Data Item`, exclusivamente Fresno (FIPS 06019), California. BU / ACRE se conserva; no hay conversión supuesta a kg/ha. No es cobertura estatal ni de parcelas. CV falta en 390 registros; incertidumbre desconocida, no cero.
-- **NASA POWER:** 1.826 días completos, 2021–2025, un punto 36.59/-119.52, LST, siete variables. La radiación está en MJ/m²/día. No unir sus fechas locales como instantes UTC.
-- **SMAP/MODIS/GPM de media hora:** originales locales vacíos. Los derivados son legibles, pero no verificables contra esos originales y quedan fuera de observaciones integradas.
-- **SRTM:** un mosaico N37W120, estático de febrero de 2000, en metros, 1 segundo de arco. No hay pendientes calculadas ni cobertura regional completa.
-- **GAEZ:** 17 GeoTIFF, 16 legibles y uno vacío. Las capas locales llevan AgERA5 en su procedencia; se auditan e inventarían, pero se excluyen de la integración cuantitativa como interpretación conservadora de la restricción «no usar ERA5». No se descargan ni procesan datos ERA5 adicionales. Varias unidades GAEZ siguen sin corroborar.
-- **FAOSTAT:** 823.058 rendimientos kg/ha, 1961–2024, 244 códigos de área y 169 productos; incluye agregados y entidades históricas. Flags A/E/X retenidos, sin duplicados de área/producto/elemento/año.
-- **EcoCrop:** 2.568 registros; 706 con al menos una anomalía. Usar `*_usable`/`*_valid`, no valores originales inválidos. No todas las especies son cultivos.
-- **FAO-56:** 57 etiquetas/variantes de extracción parcial verificada previamente y ligada al hash del PDF; 31 Kc iniciales nulos. Kc adimensional, bajo las condiciones documentadas; no mm de agua ni calibración local.
-- **Crop Calendar:** 57 países publicados, 9.418 filas de sesiones estacionales. Mantiene país, zona, cultivo, sesión, intervalos/unidades y trazabilidad; no asigna años ni geometrías inexistentes. Se detectaron 109 filas con extremos estacionales inválidos en 19 países; las consultas añaden `seasonal_date_invalid` sin alterar los valores. Identificador FAO 0109 repetido en catálogo: no usar como clave única sin desambiguación.
+## Repository structure
 
-## Archivos producidos
+| Folder | Contents |
+|---|---|
+| `src/` | The engine: climate profiles, crop library, terrain, water requirement, scores, routes, backtest, app export |
+| `scripts/` | Command-line entry points for each step (download, profiles, routes, backtest, sensitivity, app build) |
+| `app/` | The farmer web app (HTML, CSS, JavaScript, service worker, translations) |
+| `config/` | Pilot sites, data sources and verified FAO-56 tables |
+| `notebooks/` | `terrapath_recorrido.ipynb`, a step-by-step walkthrough of the real engine with its outputs |
+| `reports/` | Data audit, backtest, sensitivity, figures and earlier project notes |
+| `tests/` | Python and JavaScript tests |
+| `prototipo/` | Figma screens the app is built from |
+| `docs/screenshots/` | Screenshots used in this README |
 
-- `data/processed/sentinel2_monthly.parquet`: columnas originales, fecha normalizada, fila fuente, flags y máscaras de uso por índice.
-- `data/processed/usda_nass.parquet`: originales, valores numéricos/símbolos de supresión, unidad, FIPS textual, periodo anual y duplicados de clave completa.
-- `data/processed/gpm_monthly_index.parquet`: 57 entradas con ruta/hash, fechas, estado y estadísticas; no tabla de píxeles.
-- `data/processed/gpm_monthly_points.parquet`: 399 filas en las siete coordenadas existentes de Sentinel/POWER. Conserva celda nativa seleccionada, índices, cinco variables, duración y procedencia. Extracción de celda más cercana, sin interpolación.
-- `data/integrated/observations.parquet`: 14.425 observaciones en formato largo. Es un almacén consultable con calidad explícita, **no una tabla lista para entrenar**. Incluye registros que requieren revisión.
-- `data/integrated/locations.parquet`: pilotos/punto POWER/condado; el condado conserva coordenadas nulas porque no se dispone de geometría.
-- `data/integrated/catalog.parquet`: acceso a fuentes de referencia y grillas, estado de integridad, resoluciones, unidades y metadatos. No duplica FAOSTAT ni grillas globales.
-- `data/metadata/audit/*.json`: estadísticas completas, cobertura, flags, hashes de los 165 originales y comprobación antes/después. Los 57 sidecars GPM reciben `local_audit`. Sus hashes/tamaños ya coincidían: no se sustituyeron. Si una futura recuperación requiere corregirlos, se conserva el valor previo y solo se actualiza tras validación científica.
+## Next steps
 
-El SHA-256 es una referencia de integridad local, no un checksum independiente del proveedor. `verified` en el catálogo significa integridad de procedencia local comprobada; no exactitud frente a mediciones de campo ni aptitud automática para entrenamiento. Los cuatro originales vacíos quedan explícitamente identificados.
+1. Settle the POWER and IMERG rainfall difference in Piura with SENAMHI weather stations.
+2. Add Andean crops (quinoa, local potatoes) with verified Kc values and frost limits.
+3. Have an agronomist review the rules and local planting calendars.
+4. Languages written by native speakers, a listen button, and more districts.
 
-## Consultas por ubicación, fecha y cultivo
+## Team
 
-Desde Python en la raíz del proyecto:
+Riki Dos Santos · Mia W. · Mafer · Mauricio · Mia H.
 
-```python
-from src.store import DataStore
-store = DataStore()
+## Acknowledgements and licences
 
-# Periodos que se solapan con [start, end); conserva todos los estados QA.
-series = store.observations(location_id='sentinel2:piura_1',
-                            start='2021-01-01', end='2022-01-01')
-# Solo coincidencia exacta con coordenadas registradas; no asignación de condado.
-point = store.at_point(-5.24, -79.45, source='gpm_monthly')
-# Consulta bajo demanda de originales mensuales validados, sin descargar ni expandir grilla.
-rain = store.gpm_at_point(-5.24, -79.45, '2021-01-01', '2021-03-01')
-# Rendimientos anuales: conserva cada variante de manejo/subtipo en Data Item.
-yields = store.observations(location_id='us_county:06019', crop_id='nass:WHEAT')
-# Identificadores/nombres nativos exactos; no equivalencias entre fuentes.
-calendar = store.crop_reference('calendar', '0056', area='PE')
-kc = store.crop_reference('fao56', 'Broccoli')
-```
+- Data from NASA POWER, NASA SRTM (LP DAAC), NASA GPM IMERG (GES DISC), FAO (FAO-56, EcoCrop, FAOSTAT, GAEZ, Crop Calendar), ESA Copernicus Sentinel-2 and USDA NASS, each under its own terms of use.
+- [Leaflet](https://leafletjs.com) (BSD-2), map data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors (ODbL), [Nunito](https://github.com/googlefonts/nunito) font (SIL Open Font License).
+- We used Claude (Anthropic) as a coding and writing assistant. The routes the farmer sees come from transparent, rule-based scoring, not from a machine-learning model; the team reviewed all content.
 
-`crop_reference` también admite `faostat` (Item Code, opcional Area Code/año) y `ecocrop` (nombre científico exacto). Las referencias incluyen metadatos de procedencia en `DataFrame.attrs['fieldshift_lineage']`; se verifica el hash actual del original y del derivado antes de devolverlas. Un país sin calendario local devuelve tabla vacía; no se extrapola.
-
-Cada observación conserva variable/unidad, soporte espacial/temporal, periodo con fin exclusivo, ruta/hash fuente, estado de calidad y detalles JSON. Los cultivos son identificadores del origen; las observaciones ambientales no adquieren etiquetas de cultivo por proximidad. Las fechas LST permanecen días locales. Se mantienen los originales y los valores sospechosos; los consumidores deben filtrar la calidad de manera explícita.
-
-## Antes de Machine Learning y optimización
-
-Resolver el export Sentinel y los originales vacíos; definir parcela/área, temporada, objetivo y cultivos; revisar correspondencias entre fuentes y conversiones de rendimiento; acordar QA y agregaciones compatibles con cada soporte; diseñar particiones temporales/espaciales sin fuga. Solo un registro NASS de 2021 solapa con la serie mensual GPM disponible, y los puntos Sentinel/POWER no son una media de Fresno. Faltan historiales de rotación y restricciones verificadas de suelo, riego, plagas y precedencias. Ninguna de estas carencias se completa con valores supuestos.
-
-Pruebas y resultados de esta ejecución: [reports/test_results.md](reports/test_results.md). Configuraciones históricas de adquisición siguen disponibles como referencia, pero no se ejecutan durante la auditoría offline.
-
-## Prototipo de evaluación climática
-
-Ejecutar `.venv/bin/python scripts/evaluate_crops.py --crops 'Zea mays' 'Triticum aestivum'`.
-Documentación, supuestos, unidades y limitaciones en [reports/crop_prototype.md](reports/crop_prototype.md); ejemplo completo en [reports/crop_screen_example.json](reports/crop_screen_example.json). Genera 57 filas mensuales POWER–GPM; no recomienda una rotación sin restricciones documentadas. Validación actual: 49 aprobadas, 3 omitidas.
-
-## Escenarios de parcela (etapa actual)
-
-```bash
-.venv/bin/python scripts/parcel_scenarios.py --demo
-.venv/bin/python scripts/parcel_scenarios.py --input parcela.json
-```
-
-La demo usa un **plan hipotético** con datos NASA/FAO locales reales; sus fechas no son una recomendación de siembra. Para proporcionar una parcela, el JSON admite:
-
-```json
-{
-  "latitude": 36.59,
-  "longitude": -119.52,
-  "current_crop": null,
-  "previous_crops": [],
-  "sowing_date": "2023-04-01",
-  "horizon_end": "2023-10-31",
-  "irrigation": {"available": null},
-  "soil": {},
-  "candidates": [
-    {"crop": "Zea mays", "harvest_date": "2023-09-30"},
-    {"crop": "Glycine max", "harvest_date": "2023-09-30"}
-  ],
-  "assumptions": {"screen_season_mean_temperature": true}
-}
-```
-
-Los datos suministrados son declaraciones del agricultor, no hechos independientemente verificados. Historial: lista de objetos `crop`, `start`, `end`, con fechas anteriores a la siembra y sin solapamientos. Suelo admite `ph` (0–14), `texture` textual y `nitrogen_kg_ha`; no se infieren nutrientes faltantes. Riego admite disponibilidad booleana/nula y `seasonal_mm` solo si se declara disponible. Cantidad declarada no equivale a agua efectiva. Valores ausentes siguen desconocidos. Los cultivos se buscan por nombre científico exacto. No se aplica la hipótesis térmica salvo activación explícita.
-
-Se valida ubicación, fechas ISO reales, horizonte, cosecha, historial, tipos, unidades admitidas, límites y candidatos duplicados. El JSON de salida distingue entrada del agricultor, evidencia NASA/FAO, supuestos y restricciones desconocidas. `rotation_sequence` y el ranking permanecen nulos.
-
-**Temporada:** suma diaria POWER entre siembra y cosecha, ambas inclusivas, solamente con cobertura diaria completa y sin lluvia ausente/negativa. No se prorratea GPM mensual ni se extrapolan años parciales. Para otras coordenadas sin serie POWER local se devuelve desconocido, sin reutilizar California. El POWER es estimación de grilla servida como punto, no medición de parcela. Fechas futuras no se pronostican. La lluvia estacional nunca se contrasta con límites de precipitación anual EcoCrop. Sin demanda estacional, lluvia efectiva, almacenamiento y eficiencia de riego, no se declara balance hídrico favorable.
-
-Las fechas propuestas forman un plan calendario válido sintácticamente, **no un calendario agronómico verificado**. Opcionalmente cada candidato admite `fao_calendar` con `country`, `crop_id`, `aez_id`, `source_record`, `session_index`: selecciona una referencia local exacta. Se rechazan extremos inválidos y se comparan las ventanas estacionales, incluso cuando cruzan el año; extremos ausentes producen desconocido. Aun con fechas compatibles falta verificar correspondencia taxonómica y pertenencia de la parcela a la zona agroecológica. Un selector proporcionado por el agricultor no certifica esas correspondencias. No se fabrican calendarios de California.
-
-**GAEZ — rectificación de etapas anteriores:** la restricción aclarada permite productos FAO derivados de AgERA5, sin descargar ERA5 directamente. Se muestrean solo seis capas SIX existentes (maíz, trigo, soja; secano/irrigado con altos insumos), con hash, resolución, escenario y periodo 2001–2020. Hay una discrepancia objetiva: los rásteres locales son uint8 con códigos 0–9 y NoData=0, sin unidad declarada; la descripción histórica «índice 0–10000» no es aplicable a esos valores almacenados. Se muestran como **códigos con leyenda pendiente**, sin ordenarlos, convertirlos a porcentaje ni inferir que 8 sea mejor que 3. Las capas YCX/WDE/CYL conservan unidades pendientes; el archivo vacío no se usa. LT5 no es etiqueta de aptitud por cultivo. GAEZ no suma votos climáticos independientes a POWER/GPM y no representa la parcela ni el año del escenario. Las exclusiones y unidades descritas en informes anteriores son históricas; esta revisión prevalece para los escenarios nuevos.
-
-Ejemplo ejecutado: abril–septiembre 2023, 183 días completos, 64,21 mm POWER para ambos candidatos. Maíz: códigos SIX secano/irrigado 8/3; soja: 8/2, **sin interpretación de aptitud**. Ambos escenarios quedan insuficientemente documentados. La comparación expone factores y límites EcoCrop válidos para pH declarado y temperatura media estacional si se habilita esa hipótesis; no agrega puntuaciones ni decide viabilidad por precipitación anual.
-
-Para un optimizador faltan calendario local y correspondencias verificados, historia real de cultivos, reglas de transición/familias, balance de nutrientes y agua, restricciones de manejo y objetivos/costos. La estructura permite registrar esas entradas, pero no inventa relaciones ni implementa optimización. El evaluador anual anterior se mantiene como cribado separado.
-
-Pruebas de esta ampliación: 59 aprobadas y 3 omitidas por originales vacíos. Código: `src/parcel_scenarios.py`, terminal: `scripts/parcel_scenarios.py`, pruebas: `tests/test_parcel_scenarios.py`. No se duplicaron tablas de datos ni se alteraron originales.
-
-## Optimizador experimental de 2–3 temporadas
-
-```bash
-.venv/bin/python scripts/optimize_rotation.py examples/rotations/hypothetical.input.json
-.venv/bin/python scripts/optimize_rotation.py examples/rotations/real_incomplete.input.json
-```
-
-Motor puro: `src/rotation_optimizer.py::optimize`. Reutiliza las validaciones de parcela; el comando adjunta el evaluador `scenarios` como evidencia separada. No transforma automáticamente información insuficiente del evaluador en restricciones favorables. Ejemplos JSON de entrada/salida en `examples/rotations/`.
-
-Enumeración exhaustiva determinista, máximo ocho candidatos y dos/tres temporadas (512 secuencias). No necesita solver ni dependencias nuevas. Se registran todas las secuencias, incluidas las descartadas con sus motivos; no se poda para mantener la explicación completa de este conjunto pequeño.
-
-Parámetros numéricos: `value`, `unit`, `provenance`, `status` (documented o hypothetical). Unidades admitidas: duración `day`, requerimiento y presupuesto de riego `mm` por temporada, costo `USD/ha`. Se comparan sobre la misma parcela. La disponibilidad es volumen equivalente declarado; no se infiere a partir de lluvia. No se suman monedas ni superficies diferentes.
-
-Obligatorias: cultivo precedente declarado; revisión explícita de restricciones del historial; transición permitida/prohibida para cada par posible, incluido el precedente; duración entera positiva que quepa en el intervalo; fechas ordenadas sin solapamientos; permiso de calendario, clima y suelo/nutrientes por candidato y temporada; riego requerido frente al presupuesto. Los permisos contienen `allowed`, `provenance`, `status`. Son **certificados de restricciones suministrados**, no cálculos agronómicos inferidos por el motor. El proveedor debe verificar ventanas, manejo, taxonomía, familia, nutrientes y efectos del historial antes de marcarlos como documentados. Un texto de procedencia no constituye validación científica automática. Reglas familiares solo se representan mediante transiciones explícitas; no se adivinan familias. El motor no simula nutrientes dinámicos ni efectos acumulados de tres temporadas: deben estar cubiertos por las restricciones externas o el escenario sigue siendo experimental.
-
-Criterios opcionales: lista ordenada de `min_cost`, `min_irrigation`. Se minimizan lexicográficamente, no mediante pesos ocultos. Costos solo son necesarios si se activa ese objetivo. Si falta un dato obligatorio o un costo requerido, se abstiene. Sin objetivos devuelve secuencias factibles sin seleccionar mejor. Empates: orden lexicográfico de nombres, declarado y sin significado agronómico. Todos los resultados se etiquetan experimental_not_agronomically_validated, incluso con parámetros declarados documentados.
-
-Demo **enteramente hipotética en sus restricciones y costos**, sin resultados agrícolas: tres cultivos, dos temporadas, cultivo precedente maíz, ciclos de 100 días, presupuesto 100 mm/temporada, prohibición de repetir inmediatamente cultivo. Costos artificiales soja/trigo/maíz: 10/20/30 USD/ha; riego artificial: 40/60/90 mm. Hay nueve secuencias: cuatro factibles y cinco descartadas por repetición. Soja→trigo y trigo→soja empatan en costo 30 y riego total 100; se selecciona soja→trigo únicamente por el desempate declarado. Soja→maíz cuesta 40 y requiere 130; trigo→maíz cuesta 50 y requiere 150. Los totales de agua se suman en el horizonte; el límite obligatorio es por temporada, no 100 mm en todo el horizonte. No se afirma ventaja biológica de soja→trigo.
-
-El caso real incompleto usa las coordenadas con POWER disponible, pero desconoce cultivo actual, restricciones de transición, requerimientos y presupuestos de temporada. Fechas/candidatos son un horizonte propuesto, no registros reales del agricultor. Se abstiene; los datos NASA y FAO no rellenan esos vacíos. GAEZ conserva códigos sin interpretar, Sentinel inconsistente no se consume y NASS no aporta etiquetas de rendimiento.
-
-Para recomendaciones reales: validar restricciones con agrónomos, ventanas y ciclos locales, identidad/familias de cultivos e historial, suelo/nutrientes y efectos entre temporadas, demanda y suministro de agua, costos locales y objetivo del agricultor. Incorporar evaluación de incertidumbre y validación independiente. Un óptimo bajo entradas hipotéticas es una demostración de software, no una recomendación definitiva.
-
-Validación del motor: **68 pruebas aprobadas y 3 omitidas** por originales vacíos. Pruebas añadidas: óptimo reproducible, factibilidad, restricciones climáticas/calendario/suelo, riego insuficiente, duración excesiva, transición ausente, unidades/procedencia obligatorias, tres temporadas, ausencia de objetivos y abstención del caso incompleto. Hashes de los 165 originales comprobados sin cambios.
-
-## Restricciones derivadas de datos NASA/FAO (integración con el optimizador)
-
-```bash
-.venv/bin/python scripts/optimize_with_evidence.py examples/rotations/california_evidence.input.json
-```
-
-Módulo: `src/constraints.py::optimize_with_evidence`. Construye cada restricción por cultivo y temporada con tres estados: `allowed`, `prohibited`, `unknown`. Lo desconocido nunca se convierte en permitido. Prohibido domina; un desconocido en una temporada no excluida, o en una transición entre cultivos no excluidos, provoca abstención con la lista de información requerida. Solo si no queda nada desconocido se llama a `rotation_optimizer.optimize`. Cada decisión conserva evidencia: fuente, archivo, SHA-256, variable, unidad, período, ubicación, valor y motivo. Detalle completo y estado de cada restricción en `reports/constraints_integration.md`.
-
-Entrada: `parcel` (mismo esquema que escenarios), `seasons` (`start`, `end`), `objectives` y un bloque `farmer` opcional con declaraciones explícitas, cada una con `provenance`: `country_iso2`, `water_available` (mm por temporada), `irrigation_required` (mm por cultivo y temporada; declarado, nunca calculado), `cycle` (días del cultivar), `soil_nutrients`, `transitions` y `history_review`. Los estados del optimizador aceptan además `declared` (agricultor) y `derived` (calculado de datos locales verificados). Una declaración no anula una prohibición derivada de datos.
-
-El ejemplo hipotético (`hypothetical.input.json`) sigue siendo la prueba del motor. `california_evidence.input.json` usa el punto real con POWER/GPM; sin declaraciones del agricultor se abstiene. No es una recomendación.
-
-### Necesidad de riego calculada (FAO-56)
-
-```bash
-.venv/bin/python scripts/optimize_with_evidence.py examples/rotations/california_fao56.input.json
-```
-
-`src/water_requirement.py` calcula ET₀ (Penman-Monteith FAO-56) desde NASA POWER y ETc como intervalo con las Tablas 11–12 verificadas (`config/fao56_stages_verified.json`, ligado al SHA-256 de `FAO56.pdf`). Se activa con `farmer.fao56[cultivo] = {table11_id, table12_label, provenance}`. Si la Tabla 12 no trae Kc inicial, se calcula con el Anexo 7 a partir de la lluvia POWER y de `initial_irrigation = {events: [{day, depth_mm}], provenance}` (lista vacía = sin riego). La restricción de agua usa cotas: requiere `irrigation_efficiency` para la cota superior e `initial_soil_water_mm` para la inferior. No se supone lluvia efectiva. Detalle en `reports/constraints_integration.md`.
-
+Notes from the earlier data-audit stage of the project are kept in [reports/README_etapa_anterior.md](reports/README_etapa_anterior.md).

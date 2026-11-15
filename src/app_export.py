@@ -174,8 +174,9 @@ def write(root=ROOT):
     out.write_text('// Generado por scripts/build_app.py. No editar a mano.\nwindow.APP_DATA = '
                    + json.dumps(data, ensure_ascii=False, indent=1, default=str) + ';\n')
     sw = Path(root) / 'app/sw.js'
-    if sw.exists():  # new data -> new cache name, so phones drop the old copy
-        import re
-        version = 'terrapath-' + digest(out)[:10]
+    if sw.exists():  # new data or app code -> new cache name, so phones drop the old copy
+        import re, hashlib
+        app_files = [out] + [Path(root) / 'app' / f for f in ('index.html', 'app.js', 'i18n.js', 'i18n_more.js', 'styles.css', 'manifest.webmanifest')]
+        version = 'terrapath-' + hashlib.sha256(''.join(digest(f) for f in app_files if f.exists()).encode()).hexdigest()[:10]
         sw.write_text(re.sub(r"const VERSION = '[^']*';", f"const VERSION = '{version}';", sw.read_text()))
     return out, data

@@ -1,11 +1,12 @@
 // Guarda la app en el teléfono la primera vez. Las teselas del mapa que el usuario ya vio
 // también se guardan (solo las vistas, nunca una descarga masiva: política de uso de OpenStreetMap).
 // Cambia VERSION cada vez que se regeneren los datos (scripts/build_app.py lo hace solo).
-const VERSION = 'terrapath-986ebbd4ec';
+const VERSION = 'terrapath-b40522d34e';
 const TILES = 'terrapath-tiles';
 const MAX_TILES = 400;
-const FILES = ['./', 'index.html', 'styles.css', 'app.js', 'i18n.js', 'data/app_data.js', 'manifest.webmanifest', 'icon.svg',
-  'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css'];
+const FILES = ['./', 'index.html', 'styles.css', 'app.js', 'i18n.js', 'i18n_more.js', 'data/app_data.js', 'manifest.webmanifest', 'icon.svg',
+  'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png',
+  'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css', 'vendor/nunito/nunito-latin.woff2', 'vendor/nunito/nunito-latin-ext.woff2'];
 self.addEventListener('install', e => e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting())));
 self.addEventListener('activate', e => e.waitUntil(
   caches.keys().then(keys => Promise.all(keys.filter(k => k !== VERSION && k !== TILES).map(k => caches.delete(k)))).then(() => self.clients.claim())));

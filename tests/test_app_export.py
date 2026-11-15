@@ -53,12 +53,22 @@ def test_mountain_warning_and_frost(data):
     assert iowa['month'] in (9, 10, 11) and iowa['years_with_frost'] > 30
 
 
-def test_service_worker_version_follows_data(data):
+def test_service_worker_version_follows_data_and_code(data):
+    """New data or new app code -> new cache name, so installed phones drop the old copy."""
+    import hashlib
     sw = (APP / 'sw.js').read_text()
-    assert f"terrapath-{digest(APP / 'data/app_data.js')[:10]}" in sw
+    files = [APP / 'data/app_data.js'] + [APP / f for f in ('index.html', 'app.js', 'i18n.js', 'i18n_more.js', 'styles.css', 'manifest.webmanifest')]
+    assert f"terrapath-{hashlib.sha256(''.join(digest(f) for f in files).encode()).hexdigest()[:10]}" in sw
 
 
-def test_every_text_key_exists_in_spanish():
+def string_tables():
+    src = (APP / 'i18n.js').read_text()
+    en = src.split('\n  en: {')[1].split('\n  es: {')[0]
+    es = src.split('\n  es: {')[1].split('\n};')[0]
+    return en, es
+
+
+def test_every_text_key_exists_in_english_and_spanish():
     js = (APP / 'app.js').read_text()
     keys = {k for k in re.findall(r"\bt\('([a-z_0-9]+)'", js) if not k.endswith('_')}  # 'care_' + k is listed below
     keys |= set(re.findall(r"'(m_[a-z]+)'", js))
@@ -67,19 +77,22 @@ def test_every_text_key_exists_in_spanish():
     keys |= {'status_' + k for k in ('wait', 'sown', 'grow', 'done', 'rest')}
     keys |= {'fail_' + k for k in ('altitude', 'heat', 'cold', 'frost', 'annual_rain', 'cycle')}
     keys |= set(re.findall(r"\['[a-z]+', '(nav_[a-z]+)'", js))
-    es = (APP / 'i18n.js').read_text().split('qu:')[0]
-    missing = [k for k in keys if not re.search(rf"\b{k}:", es)]
-    assert not missing, missing
+    for table in string_tables():
+        missing = [k for k in keys if not re.search(rf"\b{k}:", table)]
+        assert not missing, missing
 
 
 def test_quechua_is_not_machine_filled():
-    """Quechua must be written by a native speaker of the local variety; until then it stays empty."""
-    assert re.search(r"qu:\s*\{\s*\}", (APP / 'i18n.js').read_text())
+    """Quechua must be written by a native speaker of the local variety; until then it has no table
+    and the app shows English with a note."""
+    src = (APP / 'i18n.js').read_text()
+    assert not re.search(r"\bqu:\s*\{", src)
+    assert "['qu', 'Runasimi (Quechua)']" in src
 
 
 def test_palette_has_no_red():
     css = (APP / 'styles.css').read_text().lower()
-    assert 'red' not in re.sub(r'/\*.*?\*/', '', css, flags=re.S)
+    assert not re.search(r'\bred\b', re.sub(r'/\*.*?\*/', '', css, flags=re.S))  # 'reduced-motion' is not a colour
     for hexcolor in re.findall(r'#([0-9a-f]{6})\b', css):
         r, g, b = (int(hexcolor[i:i + 2], 16) for i in (0, 2, 4))
         assert not (r > 180 and g < 90 and b < 90), hexcolor
@@ -108,7 +121,7 @@ def test_daily_normals_are_normals_not_fill(data):
 def test_app_is_terrapath_and_drops_limitation_texts():
     files = {f.name: f.read_text() for f in [APP / 'index.html', APP / 'app.js', APP / 'i18n.js', APP / 'manifest.webmanifest', APP / 'sw.js']}
     joined = '\n'.join(files.values())
-    assert 'Rutas de Cultivo' not in joined and '<title>Terrapath</title>' in files['index.html']
+    assert 'Rutas de Cultivo' not in joined and '<title>TerraPath</title>' in files['index.html']
     for gone in ('Funciona sin internet', 'El mapa necesita internet', 'No tenemos datos de cuánto rinde', 'No podemos evaluar la helada'):
         assert gone not in joined, gone
     assert 'Antes de sembrar, consulta con tu técnico agrario.' in files['i18n.js']
@@ -141,8 +154,17 @@ def test_app_logic_in_node():
 def test_no_years_chat_or_sources_in_the_interface():
     js, es = (APP / 'app.js').read_text(), (APP / 'i18n.js').read_text()
     assert not re.search(r'\b(1981|2024)\b', es + js)
-    for gone in ('Pregúntame', 'De dónde salen los datos', 'class="fab', 'sources('):
+    for gone in ('Pregúntame', 'De dónde salen los datos', 'sources('):
         assert gone not in es + js + (APP / 'index.html').read_text(), gone
+
+
+def test_ai_button_is_only_a_placeholder():
+    """The assistant (IA) button is a future improvement: it only opens a 'coming soon' note.
+    No chat, no model, no network call from the app code."""
+    js, strings = (APP / 'app.js').read_text(), (APP / 'i18n.js').read_text()
+    assert 'class="fab-ai"' in js and "ai_soon: 'Coming soon. For now, ask your farm adviser.'" in strings
+    for gone in ('fetch(', 'XMLHttpRequest', 'WebSocket', '<textarea', 'api.anthropic', 'openai'):
+        assert gone not in js, gone
 
 
 def test_account_never_stores_the_plain_pin():
@@ -181,3 +203,40 @@ if (bad) { console.log(bad, 'distintas'); process.exit(1); }
 """)
     out = subprocess.run([node, str(script), str(case)], capture_output=True, text=True, timeout=120)
     assert out.returncode == 0, out.stdout + out.stderr
+
+
+def test_every_listed_language_is_complete_or_falls_back_to_english():
+    """Each translated language has every English key, the same {placeholders}, 12 months, 7 weekdays and
+    every crop. Quechua and Aymara have no table on purpose (native speakers must write them): English + a note."""
+    import shutil, subprocess
+    node = shutil.which('node')
+    if not node:pytest.skip('node no disponible')
+    script = """
+      global.window = {};
+      require(process.argv[1] + '/i18n.js'); require(process.argv[1] + '/i18n_more.js');
+      const S = window.STRINGS, en = S.en, out = {};
+      for (const [code] of window.LANGUAGES) {
+        const t = S[code];
+        if (!t) { out[code] = 'english'; continue; }
+        const bad = [];
+        for (const k of Object.keys(en)) {
+          if (k === 'app_name') continue;
+          const a = en[k], b = t[k];
+          if (b === undefined) { bad.push('missing ' + k); continue; }
+          if (typeof a === 'string') {
+            const ph = s => (s.match(/\\{[a-zA-Z]+\\}/g) || []).map(x => x.toLowerCase()).sort().join();
+            if (ph(a) !== ph(b)) bad.push('placeholders ' + k);
+          } else if (Array.isArray(a) && a.length !== b.length) bad.push('length ' + k);
+          else if (!Array.isArray(a) && typeof a === 'object' && Object.keys(a).some(c => !b[c])) bad.push('crops ' + k);
+        }
+        out[code] = bad.length ? bad : 'ok';
+      }
+      console.log(JSON.stringify({ out, mt: window.MACHINE_TRANSLATED }));
+    """
+    res = json.loads(subprocess.run([node, '-e', script, str(APP)], capture_output=True, text=True, check=True).stdout)
+    out = res['out']
+    assert out['en'] == 'ok' and out['es'] == 'ok'
+    for code in ('pt', 'fr', 'sw', 'hi', 'zh', 'ar'):
+        assert out[code] == 'ok', (code, out[code])
+        assert code in res['mt']   # the app tells the farmer it is a machine translation
+    assert out['qu'] == 'english' and out['ay'] == 'english'
