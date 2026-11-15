@@ -9,7 +9,7 @@
   const LANGS = window.LANGUAGES;
   // Pestañas con el botón del asistente (IA). Es solo un marcador: abre un aviso de "próximamente".
   const AI_VIEWS = ['inicio', 'farm', 'routes', 'account'];
-  let aiOpen = false;
+  let aiOpen = false, langOpen = false, langSheetOpen = false, lastView = null, navBack = false;
   const FALLOW = 'barbecho';
   const NEAR_KM = 30;
   // Colores de la paleta por eje: Agua, Tierra, Cosecha segura. Hoy (lo que siembra) en gris.
@@ -116,7 +116,8 @@
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-6.5 8-6.5s7 2 8 6.5"/>',
     logout: '<path d="M14 4h5v16h-5"/><path d="M10 12h10M6 8l-4 4 4 4"/><path d="M2 12h8"/>',
     globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/>',
-    chevron: '<path d="M6 9l6 6 6-6"/>'
+    chevron: '<path d="M6 9l6 6 6-6"/>',
+    chat: '<path d="M4 20l1.4-4.2A8 8 0 1 1 8.2 18.6z"/>'
   };
   function icon(name, color, size) {
     return `<svg class="i" width="${size || 22}" height="${size || 22}" viewBox="0 0 24 24" fill="none" stroke="${color || 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PATHS[name] || ''}</svg>`;
@@ -128,21 +129,39 @@
     return `<div class="dots" aria-hidden="true">${[1, 2, 3].map(i => `<span class="${i <= n ? 'on' : ''}"></span>`).join('')}</div>
       <div class="dots-label">${esc(t('step', { n }))}</div>`;
   }
-  function mainButton(label, action, disabled) {
-    return `<div class="btn-main"><button data-act="${action}" ${disabled ? 'disabled' : ''}>${esc(label)}</button></div>`;
+  function mainButton(label, action, disabled, extra) {
+    return `<div class="btn-main">${extra || ''}<button data-act="${action}" ${disabled ? 'disabled' : ''}>${esc(label)}</button></div>`;
   }
-  function back(action) { return `<button class="back" data-act="${action}">← ${esc(t('back'))}</button>`; }
+  function back(action) { return `<button class="back" data-act="${action}" data-dir="back">← ${esc(t('back'))}</button>`; }
+  function langName() { return (LANGS.find(([code]) => code === state.lang) || [])[1] || state.lang; }
   function langNote() {
     if (translated()) return '';
-    const name = (LANGS.find(([code]) => code === state.lang) || [])[1] || state.lang;
-    return `<div class="warn" role="note">${esc(t('lang_pending', { lang: name }))}</div>`;
+    return `<div class="warn" role="note">${esc(t('lang_pending', { lang: langName() }))}</div>`;
   }
-  // Lista desplegable nativa: en el celular abre el selector del sistema, grande y fácil de tocar.
+  // Lista de idiomas (la misma en la bienvenida, que se abre hacia arriba, y en la hoja de Mi cuenta).
+  function langList() {
+    return `<ul class="lang-menu" role="listbox" id="lang-menu" aria-label="${esc(t('choose_language'))}">${LANGS.map(([code, name]) =>
+      `<li><button role="option" data-lang="${code}" lang="${code}" aria-selected="${state.lang === code}">${esc(name)}
+        ${state.lang === code ? icon('check', '#00733A', 20) : ''}</button></li>`).join('')}</ul>`;
+  }
+  // Lista desplegable propia, como en el prototipo: botón con globo y flecha; el menú se abre hacia arriba.
   function langPicker() {
-    return `<label class="lang-select">${icon('globe', '#00733A', 24)}
-      <select id="lang-select" aria-label="${esc(t('choose_language'))}">${LANGS.map(([code, name]) =>
-        `<option value="${code}" lang="${code}"${state.lang === code ? ' selected' : ''}>${esc(name)}</option>`).join('')}</select>
-      ${icon('chevron', '#00733A', 22)}</label>${langNote()}`;
+    return `<div class="lang-dd">${langOpen ? langList() : ''}
+      <button class="lang-btn" data-act="lang-toggle" aria-haspopup="listbox" aria-expanded="${langOpen}" aria-controls="lang-menu">
+        ${icon('globe', '#00733A', 24)}<span class="nm">${esc(langName())}</span>${icon('chevron', '#00733A', 22).replace('class="i"', 'class="i chev"')}</button></div>`;
+  }
+  function askTech() {
+    return `<div class="warn tech" role="note">${icon('alert', '#10301C')}<strong>${esc(t('ask_tech'))}</strong></div>`;
+  }
+  // Logo del prototipo: brote de dos hojas sobre dos ondas de tierra, con un punto lima.
+  function logo() {
+    return `<svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true">
+      <path d="M48 62V34" stroke="#00733A" stroke-width="5" stroke-linecap="round"/>
+      <path d="M48 40c-12 0-19-6-19-17 11 0 19 6 19 17z" fill="#00733A"/>
+      <path d="M48 36c0-11 7-17 19-17 0 11-7 17-19 17z" fill="#21A159" stroke="#00733A" stroke-width="3"/>
+      <circle cx="73" cy="16" r="5" fill="#D8E622"/>
+      <path d="M18 70c10-7 20-7 30 0s20 7 30 0" fill="none" stroke="#8CC63F" stroke-width="5" stroke-linecap="round"/>
+      <path d="M18 80c10-7 20-7 30 0s20 7 30 0" fill="none" stroke="#21A159" stroke-width="5" stroke-linecap="round"/></svg>`;
   }
   // Botón flotante del asistente: mejora futura, todavía sin funciones. Solo abre un aviso.
   function aiButton() {
@@ -154,13 +173,25 @@
         <h3 id="ai-title">${esc(t('ai_title'))}</h3><p>${esc(t('ai_soon'))}</p>
         <button class="btn-big" data-act="ai-close">${esc(t('close'))}</button></div>`;
   }
+  // Hoja con todos los idiomas ("See more" en Mi cuenta).
+  function langSheet() {
+    return `<div class="sheet-bg" data-act="lang-close"></div>
+      <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="lang-title">
+        <h3 id="lang-title">${esc(t('choose_language'))}</h3>${langList()}
+        <button class="btn-big" data-act="lang-close" style="margin-top:12px">${esc(t('close'))}</button></div>`;
+  }
+  // Aviso de montaña: arriba si la diferencia de altitud es grande (más de 500 m), si no después de las rutas.
+  function bigGap(p) { return p.terrain.srtm_m != null && p.terrain.merra2_m != null && Math.abs(p.terrain.srtm_m - p.terrain.merra2_m) > 500; }
   function mountain(p) {
     if (!p.terrain.mountain_warning) return '';
     return `<div class="warn" role="note"><strong>${icon('mountain', '#10301C')} ${esc(t('mountain_title'))}</strong>${esc(t('mountain', { srtm: p.terrain.srtm_m ?? '—', merra: p.terrain.merra2_m ?? '—' }))}</div>`;
   }
-  function cropTile(k) {
-    return `<span class="crop"><span class="em" aria-hidden="true">${ICON[k] || ''}</span><span class="nm">${esc(cap(cropName(k)))}</span></span>`;
+  const GRAIN = ['maize', 'wheat', 'barley', 'oat', 'sorghum', 'rice'], TUBER = ['potato', 'cassava'];
+  function cropTile(k, big) {
+    const tone = GRAIN.includes(k) ? ' grain' : TUBER.includes(k) ? ' tuber' : '';
+    return `<span class="crop${big ? ' big' : ''}"><span class="em${tone}" aria-hidden="true">${ICON[k] || ''}</span><span class="nm">${esc(cap(cropName(k)))}</span></span>`;
   }
+  function strip(seq) { return `<div class="seq">${seq.map(k => cropTile(k)).join('<span class="arrow" aria-hidden="true">→</span>')}</div>`; }
   function altitudes(p) {
     const farm = p.terrain.srtm_m, cell = p.terrain.merra2_m;
     return `${farm != null ? esc(t('alt_farm', { m: farm })) : ''}${farm != null && cell != null ? ' · ' : ''}${cell != null ? esc(t('alt_cell', { m: cell })) : ''}`;
@@ -203,28 +234,29 @@
 
   // ---------- pantallas ----------
   function home() {
-    return `<section class="hero">
-      <div class="logo">${icon('leaf', '#00733A', 64)}</div>
+    const offline = navigator.serviceWorker && navigator.serviceWorker.controller;
+    return `<section class="welcome">
+      ${offline ? `<span class="badge-offline">${icon('check', '#00733A', 18)} ${esc(t('works_offline'))}</span>` : ''}
+      <div class="logo-wrap" ${offline ? '' : 'style="margin-top:110px"'}>${logo()}</div>
       <h1>${esc(t('app_name'))}</h1>
-      <p class="soft">${esc(t('tagline'))}</p>
-      <h3>${esc(t('choose_language'))}</h3>
-      ${langPicker()}
-    </section>${mainButton(t('start'), 'start')}`;
+      <p class="tagline">${esc(t('tagline'))}</p>
+    </section>${mainButton(t('start'), 'start', false,
+      `${langNote()}<p class="lang-label">${icon('chat', '#4A6354', 18)} ${esc(t('choose_language'))}</p>${langPicker()}`)}`;
   }
 
   function where() {
-    const list = DATA.pilots.map(p => `<button class="option" data-pilot="${esc(p.id)}" aria-pressed="${state.pilot === p.id}">
-        <span class="ico">${icon('pin', '#00733A', 26)}</span><span class="txt"><strong>${esc(p.label)}</strong>
-        <span>${altitudes(p)}</span></span></button>`).join('');
+    const list = DATA.pilots.map(p => `<button class="place" data-pilot="${esc(p.id)}" aria-pressed="${state.pilot === p.id}">
+        <span class="pin">${icon('pin', '#00733A', 24)}</span><span><strong>${esc(p.label)}</strong>
+        <span class="alt">${altitudes(p)}</span></span></button>`).join('');
     return `${back('to-home')}${dots(1)}
       <h2>${esc(t('q_where'))}</h2>
       <p class="soft">${esc(t('where_help'))}</p>
       <div id="map" class="map" aria-label="${esc(t('map_label'))}"></div>
       <div id="confirm"></div>
-      <button class="btn-line" data-act="gps">${icon('locate', '#00733A')} ${esc(t('use_gps'))}</button>
-      <p class="small soft" style="margin-top:6px">${esc(t('gps_why'))}</p>
+      <button class="btn-dash" data-act="gps">${icon('locate', '#00733A')} ${esc(t('use_gps'))}</button>
+      <p class="small soft" style="margin:8px 0 4px">${esc(t('gps_why'))}</p>
       <p id="gps-msg" class="small" role="status"></p>
-      <h3 style="margin-top:14px">${esc(t('places_title'))}</h3>
+      <h3 class="sub">${esc(t('places_title'))}</h3>
       ${list}
       ${mainButton(t('next'), 'to-what', !state.pilot)}`;
   }
@@ -232,11 +264,12 @@
   function what() {
     const p = pilot();
     const keys = p.crops.map(c => c.key);
-    const years = [0, 1, 2].map(y => `<h3>${esc(t('year_' + y))}</h3><div class="chips" role="group" aria-label="${esc(t('year_' + y))}">
-        <button class="chip" data-year="${y}" data-crop="" aria-pressed="${!state.history[y]}">${esc(t('dont_know'))}</button>
-        ${keys.map(k => `<button class="chip" data-year="${y}" data-crop="${k}" aria-pressed="${state.history[y] === k}">
-          <span aria-hidden="true">${ICON[k] || ''}</span> ${esc(cap(cropName(k)))}</button>`).join('')}
-      </div>`).join('');
+    const years = [0, 1, 2].map(y => `<h3 class="sub">${esc(t('year_' + y))}</h3>
+      <label class="pick"><select data-year="${y}" aria-label="${esc(t('year_' + y))}">
+        <option value=""${state.history[y] ? '' : ' selected'}>${esc(t('select_placeholder'))}</option>
+        <option value="">${esc(t('dont_know'))}</option>
+        ${keys.map(k => `<option value="${k}"${state.history[y] === k ? ' selected' : ''}>${ICON[k] || ''} ${esc(cap(cropName(k)))}</option>`).join('')}
+      </select>${icon('chevron', '#00733A', 22)}</label>`).join('');
     return `${back('to-where')}${dots(2)}
       <h2>${esc(t('q_what'))}</h2>
       <p class="soft">${esc(t('what_help'))}</p>
@@ -245,10 +278,11 @@
   }
 
   function care() {
-    const opts = [['water', 'drop', '#1E8F6A'], ['soil', 'sprout', '#21A159'], ['safe', 'shield', '#5E6E1F']].map(([k, ico, color]) => `
+    const opts = [['water', 'drop', '#1E8F6A', '#D7EEE6'], ['soil', 'sprout', '#21A159', '#E3F2DA'], ['safe', 'shield', '#5E6B12', '#F1F4C2']].map(([k, ico, color, bg]) => `
       <button class="option" data-care="${k}" aria-pressed="${state.care === k}">
-        <span class="ico">${icon(ico, color, 30)}</span>
+        <span class="sq" style="background:${bg}">${icon(ico, color, 26)}</span>
         <span class="txt"><strong>${esc(t('care_' + k))}</strong><span>${esc(t('care_' + k + '_sub'))}</span></span>
+        ${state.care === k ? `<span class="ok">${icon('check', '#00733A', 22)}</span>` : ''}
       </button>`).join('');
     return `${back('to-what')}${dots(3)}
       <h2>${esc(t('q_care'))}</h2>
@@ -295,37 +329,40 @@
   function shared(r) { const mine = myCrops(); return r.sequence.filter(k => mine.includes(k)); }
   function myCard(p, m) {
     const notes = [];
-    if (m.repeated) notes.push(['cycle', t('mine_repeat', { crop: cropName(m.keys[0]) })]);
+    if (m.repeated) notes.push(['cycle', t('mine_repeat', { crop: cropName(m.keys[0]), Crop: cap(cropName(m.keys[0])) })]);
     m.same.forEach(([a, b]) => notes.push(['cycle', t('mine_family', { a: cap(cropName(a)), b: cropName(b) })]));
     m.excluded.forEach(c => notes.push(['alert', t('mine_excluded', { crop: cap(cropName(c.key)), why: listJoin((c.failed || []).map(f => t('fail_' + f))) })]));
     if (m.noFrost.length) notes.push(['unknown', t('mine_no_frost', { crops: listJoin(m.noFrost.map(c => cropName(c.key))) })]);
     if (!notes.length) notes.push(['check', t('mine_ok')]);
-    return `<article class="card route mine"><h3>${esc(t('mine_title'))}</h3>
-      <div class="seq">${m.keys.map(cropTile).join('<span class="arrow" aria-hidden="true">→</span>')}</div>
-      ${AXES.map(([a, l, ico, color]) => hbar(t(l), m[a], color, { icon: ico, iconColor: ico === 'shield' ? '#5E6E1F' : color, small: true })).join('')}
+    return `<article class="card tint route mine"><h3>${esc(t('mine_title'))}</h3>
+      ${m.keys.length === 1 ? `<div class="seq one">${cropTile(m.keys[0], true)}</div>` : strip(m.keys)}
+      ${axisBars(m)}
       <ul class="notes">${notes.map(([i, s]) => `<li>${icon(i, i === 'unknown' ? '#8A9A8F' : '#3F5A48', 20)}<span>${esc(s)}</span></li>`).join('')}</ul></article>`;
+  }
+  // Las tres barras de una ruta: Agua, Tierra, Cosecha segura (ícono escudo en oliva).
+  function axisBars(r) {
+    return AXES.map(([a, l, ico, color]) => hbar(t(l), r[a], color, { icon: ico, iconColor: ico === 'shield' ? '#5E6B12' : color, small: true })).join('');
   }
 
   function routes() {
     const p = pilot();
     const mine = forYou(p), m = myRotation(p);
     let body;
-    if (!p.routes.length) body = `<div class="warn">${esc(t('routes_none'))}</div>`;
+    if (!p.routes.length) body = `<div class="warn" role="note">${icon('alert', '#10301C')} ${esc(t('routes_none'))}</div>`;
     else {
       // Primero las rutas que llevan cultivos que ya siembra; el número de cada ruta no cambia.
       const order = p.routes.map((r, i) => i).sort((a, b) => shared(p.routes[b]).length - shared(p.routes[a]).length || a - b);
       body = order.map(i => {
         const r = p.routes[i], common = shared(r);
         const seq = orderedSequence(p, r);
-        const bars = AXES.map(([a, l, ico, color]) => hbar(t(l), r[a], color, { icon: ico, iconColor: ico === 'shield' ? '#5E6E1F' : color, small: true })).join('');
         const irrigation = r.water != null && r.water < 40 ? `<div class="needs">${icon('drop', '#10301C', 18)} ${esc(t('needs_irrigation'))}</div>` : '';
-        return `<article class="card route" data-route="${i}" tabindex="0" role="button">
+        return `<article class="card route${i === mine ? ' best' : ''}" data-route="${i}" tabindex="0" role="button">
           ${i === mine ? `<span class="tag">★ ${esc(t('for_you'))}</span>` : ''}
           <h3>${esc(t('route_n', { n: i + 1 }))}</h3>
           ${common.length ? `<div class="common">${icon('check', '#00733A', 18)} ${esc(t('route_has', { crops: listJoin(common.map(cropName)) }))}</div>` : ''}
           <div class="kind">${esc(t(r.kind === 'con_descanso' ? 'kind_rest' : 'kind_three'))}</div>
-          <div class="seq">${seq.map(cropTile).join('<span class="arrow" aria-hidden="true">→</span>')}</div>
-          ${bars}${irrigation}
+          ${strip(seq)}
+          ${axisBars(r)}${irrigation}
           <div class="see">${esc(t('why_link'))} →</div>
         </article>`;
       }).join('');
@@ -333,9 +370,11 @@
     }
     const intro = m && p.routes.length ? `<h3 class="section">${esc(t('recommended_title'))}</h3>
       ${p.routes.some(r => shared(r).length) ? '' : `<p class="small soft">${esc(t('recommended_none_common'))}</p>`}` : '';
+    const top = bigGap(p);
     return `${back('to-care')}
       <h2>${esc(t('routes_title', { place: p.label }))}</h2>
-      ${mountain(p)}${m ? myCard(p, m) : ''}${intro}${body}
+      ${top ? mountain(p) : ''}${m ? myCard(p, m) : ''}${intro}${body}
+      ${top ? '' : mountain(p)}
       ${p.routes.length ? compare(p) : ''}
       <button class="btn-line" data-act="restart" style="margin-top:8px">${esc(t('restart'))}</button>`;
   }
@@ -343,7 +382,7 @@
   // Barras horizontales agrupadas: Agua, Tierra, Cosecha segura; una barra por ruta y una gris para hoy.
   function compare(p) {
     const todayVals = myRotation(p);
-    const groups = AXES.map(([a, l, ico, color]) => `<div class="group"><h4>${icon(ico, ico === 'shield' ? '#5E6E1F' : color)} ${esc(t(l))}</h4>
+    const groups = AXES.map(([a, l, ico, color]) => `<div class="group"><h4>${icon(ico, ico === 'shield' ? '#5E6B12' : color)} ${esc(t(l))}</h4>
       ${p.routes.map((r, i) => hbar(t('route_n', { n: i + 1 }), r[a], color)).join('')}
       ${todayVals ? hbar(t('today_bar'), todayVals[a], TODAY_GRAY) : ''}</div>`).join('');
     return `<section class="card"><h3>${esc(t('compare_title'))}</h3>
@@ -364,7 +403,7 @@
       const worst = known.reduce((a, b) => ((b.deficit_mm || 0) > (a.deficit_mm || 0) ? b : a));
       if ((worst.deficit_mm || 0) > 0.1 * worst.demand_mm)
         out.push(['drop', t('r_water_gap', { crop: cropName(worst.key), mm: Math.round(worst.deficit_mm) })]);
-      else out.push(['drop', t(known.some(c => (c.deficit_mm || 0) > 0) ? 'r_water_near' : 'r_water_ok', { crop: known.map(c => cropName(c.key)).join(', ') })]);
+      else out.push(['drop', t(known.some(c => (c.deficit_mm || 0) > 0) ? 'r_water_near' : 'r_water_ok', { crop: listJoin(known.map(c => cropName(c.key))) })]);
     }
     const evaluable = crops.filter(c => c.frost_evaluable && c.frost_days != null);
     if (evaluable.length === crops.length && evaluable.every(c => c.frost_days < 0.5)) out.push(['snow', t('r_frost_none')]);
@@ -410,12 +449,12 @@
       ? `<p class="small fact">${icon('chart', '#3F5A48', 18)} ${esc(t('r_backtest', { n: p.backtest.test_years[1] - p.backtest.test_years[0] + 1, r: Math.round(bt.route_deficit_mm), crop: cropName(p.backtest.typical), m: Math.round(bt.typical_deficit_mm) }))}</p>` : '';
     return `${back('to-routes')}
       <h2>${esc(t('why_title'))}</h2>
-      <div class="seq">${orderedSequence(p, r).map(cropTile).join('<span class="arrow" aria-hidden="true">→</span>')}</div>
+      ${strip(orderedSequence(p, r))}
       <section class="card"><ul class="reasons">${reasons(p, r).map(([i, s]) => `<li><span class="ico">${icon(i, '#00733A', 26)}</span><span>${esc(s)}</span></li>`).join('')}</ul></section>
-      <h3>${esc(t('evidence'))}</h3>
+      <h3 class="section">${esc(t('evidence'))}</h3>
       <section class="card"><h3>${icon('snow', '#2F6F95')} ${esc(t('frost_chart'))}</h3>${frostChart(p)}</section>
       <section class="card"><h3>${icon('drop', '#1E8F6A')} ${esc(t('water_chart'))}</h3>${waterChart(p, r)}${btLine}</section>
-      <div class="warn" role="note"><strong>${icon('alert', '#10301C')} ${esc(t('ask_tech'))}</strong></div>
+      ${askTech()}
       ${mainButton(t('when'), 'to-calendar')}`;
   }
 
@@ -428,18 +467,18 @@
       <span aria-hidden="true">${ICON[s] || ''}</span> ${esc(t('campaign_n', { n: i + 1 }))}: ${esc(cropName(s))}</button>`).join('')}</div>`;
     let main, grid = '';
     const frostMonths = new Set(p.monthly.filter(m => (m.frost_days || 0) >= 0.5).map(m => m.month));
-    if (k === FALLOW) main = `<h2>${icon('rest', '#00733A')} ${esc(t('rest_season'))}</h2>`;
+    if (k === FALLOW) main = `<div class="plant-card"><h2>${esc(t('rest_season'))}</h2></div>`;
     else {
       const c = crop(p, k), months = c.months || [];
-      main = `<h2>${esc(t('sow', { crop: cropName(k), month: monthName(months[0]) }))}</h2>
-        <p>${esc(t('harvest', { crop: cropName(k), month: monthName(months[months.length - 1]) }))}</p>`;
-      grid = `<div class="cal" role="img" aria-label="${esc(t('cal_title'))}">${t('months_short').map((m, i) => {
+      main = `<div class="plant-card"><h2>${esc(t('sow', { crop: cropName(k), month: monthName(months[0]) }))}</h2>
+        <p>${esc(t('harvest', { crop: cropName(k), month: monthName(months[months.length - 1]) }))}</p></div>`;
+      grid = `<div class="cal" role="img" aria-label="${esc(t('cal_title'))}">${t('months').map((m, i) => {
         const mo = i + 1, grow = months.includes(mo), sow = mo === months[0];
-        return `<div class="${grow ? 'grow' : ''} ${sow ? 'sow' : ''}">${esc(m)}${sow ? `<small>${esc(cropName(k))}</small>` : ''}${frostMonths.has(mo) ? `<small class="fr">${icon('snow', '#2F6F95', 14)} ${esc(t('frost_word'))}</small>` : ''}</div>`;
+        return `<div class="${grow ? 'grow' : ''} ${sow ? 'sow' : ''}">${esc(cap(m))}${sow ? `<small>${esc(cap(cropName(k)))}</small>` : ''}${frostMonths.has(mo) ? `<small class="fr">${icon('snow', '#2F6F95', 14)} ${esc(t('frost_word'))}</small>` : ''}</div>`;
       }).join('')}</div>`;
     }
     return `${back('to-why')}
-      <h3>${esc(t('cal_title'))}</h3>${tabs}
+      <h3 class="sub" style="margin-top:6px">${esc(t('cal_title'))}</h3>${tabs}
       ${main}${grid}
       <ul class="facts"><li>${icon('snow', '#2F6F95')}<span>${esc(firstFrostText(p))}</span></li>
 </ul>
@@ -514,13 +553,13 @@
     const p = pilot(), f = state.farm;
     const plan = schedule(p, f), now = today();
     const start = parseDay(f.start) || now;
-    const tabs = `<div class="tabs" role="tablist">${TABS.map(k => `<button role="tab" data-tab="${k}" aria-selected="${state.tab === k}">${esc(t('tab_' + k))}</button>`).join('')}</div>`;
+    const tabs = `<div class="seg three" role="tablist">${TABS.map(k => `<button role="tab" data-tab="${k}" aria-selected="${state.tab === k}">${esc(t('tab_' + k))}</button>`).join('')}</div>`;
     const body = state.tab === 'month' ? farmMonth(p, plan, now) : state.tab === 'year' ? farmYear(p, plan, now) : farmWeek(p, plan, now);
     return `<h2>${esc(t('farm_title'))}</h2>
-      <p class="soft small">${icon('pin', '#00733A', 18)} ${esc(p.label)} · ${altitudes(p)}<br>${esc(t('farm_since', { month: monthName(start.getMonth() + 1), year: start.getFullYear() }))}</p>
-      <div class="seq">${f.seq.map(cropTile).join('<span class="arrow" aria-hidden="true">→</span>')}</div>
-      ${tabs}${body}
-      <div class="warn" role="note"><strong>${icon('alert', '#10301C')} ${esc(t('ask_tech'))}</strong></div>`;
+      <p class="place-line">${icon('pin', '#00733A', 18)} ${esc(p.label)} · ${altitudes(p)}<br>${esc(t('farm_since', { month: monthName(start.getMonth() + 1), year: start.getFullYear() }))}</p>
+      ${strip(f.seq)}
+      ${tabs}<div class="tab-body swap">${body}</div>
+      ${askTech()}`;
   }
 
   function weekTasks(p, plan, now) {
@@ -567,9 +606,9 @@
     const { n, tasks } = weekTasks(p, plan, now);
     return `<section class="card"><h3>${esc(t('todo'))}</h3>
         ${taskList(tasks)}</section>
-      ${dayByDay(n, now)}
       <section class="card">${weekStats(n)}
-        <p class="small soft">${esc(t('normal_year'))}</p></section>`;
+        <p class="small soft">${esc(t('normal_year'))}</p></section>
+      ${dayByDay(n, now)}`;
   }
 
   // Este mes como un calendario: cada día con su lluvia normal (color + número) y un copo si suele helar.
@@ -703,7 +742,7 @@
     const pin = id => field(id, id === 'f_pin' ? 'f_pin' : 'f_pin2', 'password', 'inputmode="numeric" pattern="[0-9]{4}" maxlength="4" autocomplete="' + (signup ? 'new-password' : 'current-password') + '"');
     return `${back('to-home')}
       <h2>${esc(t(signup ? 'signup_title' : 'login_title'))}</h2>
-      <div class="tabs two" role="tablist">
+      <div class="seg" role="tablist">
         <button role="tab" data-auth="login" aria-selected="${!signup}">${esc(t('login_tab'))}</button>
         <button role="tab" data-auth="signup" aria-selected="${signup}">${esc(t('signup_tab'))}</button></div>
       <form id="auth" class="card" novalidate>
@@ -768,41 +807,42 @@
       const st = status(shown, now), last = lastMonth(shown);
       const when = shown.fallow ? ''
         : `<ul class="marks"><li>${icon('sprout', '#00733A', 18)} ${esc(t('milestone_sow', { month: cap(monthName(shown.s.getMonth() + 1)), year: shown.s.getFullYear() }))}</li>
-           <li>${icon('leaf', '#5E6E1F', 18)} ${esc(t('milestone_harvest', { month: cap(monthName(last.getMonth() + 1)), year: last.getFullYear() }))}</li></ul>`;
+           <li>${icon('leaf', '#5E6B12', 18)} ${esc(t('milestone_harvest', { month: cap(monthName(last.getMonth() + 1)), year: last.getFullYear() }))}</li></ul>`;
       nowCard = `<div class="now-crop"><span class="em" aria-hidden="true">${ICON[shown.key] || ''}</span><div>
           <strong>${esc(cap(cropName(shown.key)))}</strong> <span class="pill ${st}">${esc(t('status_' + st))}</span>
           <div class="small soft">${esc(t('campaign_n', { n: plan.indexOf(shown) + 1 }))}</div></div></div>${when}`;
     } else nowCard = `<p>${esc(t('task_done'))}</p>`;
     return `${hello}
       <section class="card"><h3>${icon('pin', '#00733A')} ${esc(t('home_farm'))}</h3>
-        <p><strong>${esc(p.label)}</strong><br><span class="small soft">${altitudes(p)}</span></p></section>
-      <section class="card"><h3>${icon('sprout', '#00733A')} ${esc(t(cur ? 'now_growing' : 'coming_next'))}</h3>${nowCard}</section>
+        <p style="margin:0"><strong style="font-size:18px">${esc(p.label)}</strong><br><span class="small soft">${altitudes(p)}</span></p></section>
+      <section class="card green"><h3>${icon('sprout', '#00733A')} ${esc(t(cur ? 'now_growing' : 'coming_next'))}</h3>${nowCard}</section>
       <section class="card"><h3>${icon('calendar', '#00733A')} ${esc(t('this_week'))}</h3>${taskList(tasks)}${weekStats(n)}
-        <p class="small soft">${esc(t('normal_year'))}</p></section>
-      ${r ? `<section class="card"><h3>${icon('cycle', '#00733A')} ${esc(t('your_rotation'))} · ${esc(t('route_n', { n: state.farm.route + 1 }))}</h3>
-        <div class="seq">${state.farm.seq.map(cropTile).join('<span class="arrow" aria-hidden="true">→</span>')}</div>
-        ${AXES.map(([a, l, ico, color]) => hbar(t(l), r[a], color, { icon: ico, iconColor: ico === 'shield' ? '#5E6E1F' : color, small: true })).join('')}</section>` : ''}
+        <p class="small soft" style="margin:0">${esc(t('normal_year'))}</p></section>
+      ${r ? `<section class="card route" data-nav="farm" role="button" tabindex="0"><h3>${icon('cycle', '#00733A')} ${esc(t('your_rotation'))} · ${esc(t('route_n', { n: state.farm.route + 1 }))}</h3>
+        ${strip(state.farm.seq)}${axisBars(r)}</section>` : ''}
       ${mountain(p)}
-      <div class="warn" role="note"><strong>${icon('alert', '#10301C')} ${esc(t('ask_tech'))}</strong></div>`;
+      ${askTech()}`;
   }
 
   // ---------- Cuenta ----------
   function account() {
     const u = user();
     return `<h2>${esc(t('account_title'))}</h2>
-      <section class="card"><div class="now-crop">${icon('user', '#00733A', 40)}<div><strong>${esc(u ? u.name : '')}</strong>
-        <div class="small soft">${esc(session && session !== 'demo' ? session : '')}</div></div></div>
-        <p class="small soft">${esc(t('account_local'))}</p></section>
+      <section class="card"><div class="now-crop">${icon('user', '#00733A', 40)}<div><strong>${esc(u ? u.name : '')}</strong></div></div>
+        ${session && session !== 'demo' ? `<p class="small" style="margin:6px 0 0;color:var(--ink-2)">${esc(session)}</p>` : ''}
+        <p class="small soft" style="margin:4px 0 0">${esc(t('account_local'))}</p></section>
       <h3>${esc(t('choose_language'))}</h3>
-      ${langPicker()}
-      <button class="btn-line" data-act="to-where">${icon('pin', '#00733A')} ${esc(t('change_farm'))}</button>
-      <button class="btn-line" data-act="logout" style="margin-top:10px">${icon('logout', '#00733A')} ${esc(t('logout'))}</button>`;
+      <div class="lang-row"><button class="on" data-act="lang-sheet" lang="${esc(state.lang)}">${esc(langName())}</button>
+        <button data-act="lang-sheet">${esc(t('see_more'))}</button></div>
+      ${langNote()}
+      <button class="btn-list" data-act="to-where">${icon('pin', '#00733A')} ${esc(t('change_farm'))}</button>
+      <button class="btn-list" data-act="logout">${icon('logout', '#00733A')} ${esc(t('logout'))}</button>`;
   }
 
   function nav() {
     return `<nav class="tabbar" aria-label="${esc(t('app_name'))}">${NAV.map(([v, l, ico]) => {
       const on = state.view === v || (v === 'routes' && ['why', 'calendar'].includes(state.view));
-      return `<button data-nav="${v}" aria-current="${on ? 'page' : 'false'}">${icon(ico, on ? '#00733A' : '#3F5A48', 26)}<span>${esc(t(l))}</span></button>`;
+      return `<button data-nav="${v}" aria-current="${on ? 'page' : 'false'}">${icon(ico, on ? '#00733A' : '#4A6354', 24)}<span>${esc(t(l))}</span></button>`;
     }).join('')}</nav>`;
   }
 
@@ -848,7 +888,14 @@
     const withNav = !!user() && !['home', 'login', 'where', 'what', 'care'].includes(state.view);
     const withAi = withNav && AI_VIEWS.includes(state.view);
     if (!withAi) aiOpen = false;
-    app.innerHTML = VIEWS[state.view]() + (withAi ? aiButton() : '') + (withNav ? nav() : '') + (aiOpen ? aiSheet() : '');
+    if (state.view !== 'home') langOpen = false;
+    if (state.view !== 'account') langSheetOpen = false;
+    // Transición: la pantalla nueva entra deslizándose (hacia atrás desde la izquierda); un cambio
+    // dentro de la misma pantalla (elegir una opción) no la repite.
+    const enter = state.view !== lastView ? ` enter${navBack ? ' back' : ''}` : '';
+    lastView = state.view; navBack = false;
+    app.innerHTML = `<div class="view${enter}">${VIEWS[state.view]()}</div>` + (withAi ? aiButton() : '') + (withNav ? nav() : '')
+      + (aiOpen ? aiSheet() : '') + (langSheetOpen ? langSheet() : '');
     document.body.classList.toggle('has-main', !!app.querySelector('.btn-main'));
     document.body.classList.toggle('has-nav', withNav);
     if (state.view === 'where') initMap();
@@ -856,9 +903,12 @@
 
   function onClick(e) {
     const b = e.target.closest('[data-act],[data-lang],[data-pilot],[data-year],[data-care],[data-route],[data-campaign],[data-tab],[data-nav],[data-auth]');
-    if (!b) return;
+    // Tocar fuera del menú de idiomas lo cierra.
+    if (langOpen && (!b || (!b.dataset.lang && b.dataset.act !== 'lang-toggle'))) { langOpen = false; if (!b) return render(); }
+    if (!b || b.tagName === 'SELECT') return;
     const d = b.dataset;
-    if (d.lang) { state.lang = d.lang; save(); return render(); }
+    if (d.dir === 'back') navBack = true;
+    if (d.lang) { state.lang = d.lang; langOpen = false; save(); return render(); }
     if (d.pilot) { state.pilot = d.pilot; state.farmPoint = null; state.route = 0; state.campaign = 0; save(); return render(); }
     if (d.year !== undefined) { state.history[+d.year] = d.crop || null; save(); return render(); }
     if (d.care) { state.care = d.care; save(); return render(); }
@@ -869,6 +919,8 @@
     if (d.auth) { authTab = d.auth; authMsg = ''; return render(); }
     const act = d.act;
     if (act === 'ai' || act === 'ai-close') { aiOpen = act === 'ai'; return render(); }
+    if (act === 'lang-toggle') { langOpen = !langOpen; return render(); }
+    if (act === 'lang-sheet' || act === 'lang-close') { langSheetOpen = act === 'lang-sheet'; return render(); }
     if (act === 'gps') return gps();
     if (act === 'remind') return remind();
     if (act === 'confirm-farm') return confirmFarm();
@@ -883,7 +935,10 @@
   }
   document.addEventListener('click', onClick);
   document.addEventListener('change', e => {
-    if (e.target.id === 'lang-select') { state.lang = e.target.value; save(); render(); }
+    if (e.target.matches('select[data-year]')) { state.history[+e.target.dataset.year] = e.target.value || null; save(); render(); }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && (langOpen || langSheetOpen || aiOpen)) { langOpen = langSheetOpen = aiOpen = false; render(); }
   });
   document.addEventListener('submit', e => { if (e.target.id === 'auth') { e.preventDefault(); submitAuth(e.target); } });
   app.addEventListener('keydown', e => {
