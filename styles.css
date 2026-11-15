@@ -221,9 +221,8 @@ button { font: inherit; color: inherit; }
   padding: 16px; margin: 0 0 14px; font-size: 17px; color: var(--ink-2); line-height: 1.5;
 }
 .warn strong { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-weight: 800; color: var(--ink); }
-.warn.tech { padding: 14px 16px 18px; }
-.warn.tech .i { display: block; margin-bottom: 6px; }
-.warn.tech strong { display: block; padding-left: 20px; margin: 0; font-size: 17px; }
+.warn.tech { display: flex; align-items: center; gap: 12px; }
+.warn.tech strong { display: block; margin: 0; font-size: 17px; }
 
 /* ---------- Campos y selectores ---------- */
 .seg { display: grid; grid-template-columns: repeat(var(--n, 2), 1fr); background: var(--green-50); border-radius: 16px; margin: 0 0 14px; }
@@ -257,11 +256,12 @@ button { font: inherit; color: inherit; }
 /* ---------- Cultivos ---------- */
 .seq { display: flex; align-items: flex-start; gap: 4px; margin: 6px 0 14px; }
 .crop { display: inline-flex; flex-direction: column; align-items: center; flex: 1 1 0; min-width: 0; text-align: center; gap: 6px; }
-.crop .em { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; line-height: 1; background: var(--green-50); }
+.crop .em { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; background: var(--green-50); }
+.ci { flex: 0 0 auto; vertical-align: -5px; }
 .crop .em.grain { background: var(--crop-grain); }
 .crop .em.tuber { background: var(--crop-tuber); }
 .crop .nm { font-size: 16px; font-weight: 800; color: var(--ink); overflow-wrap: anywhere; }
-.crop.big .em { width: 60px; height: 60px; font-size: 32px; }
+.crop.big .em { width: 60px; height: 60px; }
 .arrow { color: var(--ink); font-size: 18px; margin-top: 16px; }
 .chips { display: flex; gap: 10px; overflow-x: auto; padding: 2px 0 12px; scrollbar-width: none; }
 .chips::-webkit-scrollbar { display: none; }
@@ -412,7 +412,7 @@ body.has-nav .btn-main { bottom: calc(66px + env(safe-area-inset-bottom)); }
 .fab-ai {
   position: fixed; z-index: 1001; width: 56px; height: 56px; border-radius: 50%; border: 0; cursor: pointer;
   right: max(16px, calc(50% - 215px + 16px)); bottom: calc(66px + 16px + env(safe-area-inset-bottom));
-  background: var(--brand); color: #FFFFFF; font-size: 18px; font-weight: 800;
+  background: var(--brand); color: #FFFFFF; display: flex; align-items: center; justify-content: center;
   box-shadow: 0 6px 16px rgba(16, 48, 28, .25); animation: pop .4s .3s var(--ease) both;
 }
 .fab-ai:active { background: var(--brand-press); }

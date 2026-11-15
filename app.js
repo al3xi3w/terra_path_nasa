@@ -5,7 +5,6 @@
   'use strict';
   const DATA = window.APP_DATA;
   const S = window.STRINGS;
-  const ICON = window.CROP_ICONS;
   const LANGS = window.LANGUAGES;
   // Pestañas con el botón del asistente (IA). Es solo un marcador: abre un aviso de "próximamente".
   const AI_VIEWS = ['inicio', 'farm', 'routes', 'account'];
@@ -119,6 +118,43 @@
     chevron: '<path d="M6 9l6 6 6-6"/>',
     chat: '<path d="M4 20l1.4-4.2A8 8 0 1 1 8.2 18.6z"/>'
   };
+  // Íconos de cultivos dibujados (no emojis: algunos teléfonos no tienen esos emojis y salían vacíos).
+  const GOLD = '#D9A62E', STEM = '#7A8F2B', LEAF = '#3E9B4F', POD = '#5DAA3C', BROWN = '#A86F32';
+  const ear = (c) => `<path d="M12 22V9" stroke="${STEM}" stroke-width="1.6" stroke-linecap="round"/>
+    ${[[12, 4.5, 0], [9.6, 8, -30], [14.4, 8, 30], [9.6, 11.5, -30], [14.4, 11.5, 30], [9.8, 15, -30], [14.2, 15, 30]]
+      .map(([x, y, r]) => `<ellipse cx="${x}" cy="${y}" rx="1.7" ry="2.7" transform="rotate(${r} ${x} ${y})" fill="${c}"/>`).join('')}`;
+  const pod = (c, seed) => `<path d="M4 17c2-7 8-12 16-13-1 8-6 14-13 16-1.5.4-3.3-1-3-3z" fill="${c}"/>
+    <circle cx="9" cy="15" r="1.8" fill="${seed}"/><circle cx="12.5" cy="11.5" r="1.8" fill="${seed}"/><circle cx="16" cy="8" r="1.6" fill="${seed}"/>`;
+  const CROP_SVG = {
+    alfalfa: `<path d="M12 22V6" stroke="${LEAF}" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="12" cy="5" rx="2.2" ry="3" fill="${LEAF}"/>
+      <ellipse cx="8" cy="10" rx="2" ry="3" transform="rotate(-45 8 10)" fill="${LEAF}"/><ellipse cx="16" cy="10" rx="2" ry="3" transform="rotate(45 16 10)" fill="${LEAF}"/>
+      <ellipse cx="8" cy="16" rx="2" ry="3" transform="rotate(-45 8 16)" fill="#56B05F"/><ellipse cx="16" cy="16" rx="2" ry="3" transform="rotate(45 16 16)" fill="#56B05F"/>`,
+    clover_red: `<path d="M12 13v9" stroke="${LEAF}" stroke-width="1.6" stroke-linecap="round"/>
+      <circle cx="12" cy="7.5" r="3.6" fill="${LEAF}"/><circle cx="7.6" cy="12" r="3.6" fill="#56B05F"/><circle cx="16.4" cy="12" r="3.6" fill="#56B05F"/>`,
+    wheat: ear(GOLD), barley: ear('#E2B84A'), oat: ear('#CDB66A'), rice: ear('#C9BE8E'), sorghum: ear('#B5752E'),
+    maize: `<path d="M6 21c0-6 2-10 5-12" stroke="${LEAF}" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="13.5" cy="10" rx="4" ry="7.5" transform="rotate(20 13.5 10)" fill="#F2C230"/>
+      <path d="M18 21c0-5-1.5-8-4-10" stroke="${LEAF}" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M11 6.5l4 1.4M10.3 9.5l4.6 1.6M9.8 12.5l4.4 1.6" stroke="#D9A21B" stroke-width="1" stroke-linecap="round"/>`,
+    potato: `<path d="M5 13c-1-5 3-9 8-9 5 .2 7 4 6 8-1 5-5 8-9 7.5-3-.4-4.6-3-5-6.5z" fill="#C08A4A"/>
+      <circle cx="9" cy="10" r=".9" fill="#7A5226"/><circle cx="14" cy="8.5" r=".9" fill="#7A5226"/><circle cx="12" cy="14" r=".9" fill="#7A5226"/><circle cx="15.5" cy="13" r=".8" fill="#7A5226"/>`,
+    cassava: `<path d="M5 19c3-1 9-6 13-12 1-1.5 2.6-.4 2 1.2C18 13 11 19 6.5 21 5 21.6 3.8 19.6 5 19z" fill="${BROWN}"/>
+      <path d="M17 6l1-3M19 7l2.5-1.5" stroke="${LEAF}" stroke-width="1.6" stroke-linecap="round"/>`,
+    bean_faba: pod(POD, '#A9D86E'), soybean: pod('#8DBF4A', '#E6D47A'), tarwi: pod('#7FB24A', '#F1EBD0'),
+    lentil: `<circle cx="8" cy="9" r="3.3" fill="#C9852F"/><circle cx="15.5" cy="8" r="3.3" fill="#D99A3E"/><circle cx="11.5" cy="15" r="3.3" fill="#B97425"/><circle cx="17" cy="15.5" r="2.8" fill="#C9852F"/>`,
+    bean_common: `<path d="M5 11c0-4 3-6 6-5 2 .6 2 2.6 1 3.6-1.2 1.2-1 2.9.6 3.4 2 .6 2.6 3.4.4 5C10 20 5 17 5 11z" fill="#8E4A2E"/>
+      <path d="M14 8c2-2.4 6-1.2 6 2.4 0 2.4-2 4-4 3.6-1.7-.3-2-1.3-1.6-2.6.3-1.1-1.4-1.6-.4-3.4z" fill="#A65A36"/>`,
+    sunflower: `${[0, 45, 90, 135, 180, 225, 270, 315].map(r => `<ellipse cx="12" cy="5" rx="2" ry="3.4" transform="rotate(${r} 12 12)" fill="#F4C21F"/>`).join('')}
+      <circle cx="12" cy="12" r="3.8" fill="#7A4E22"/>`,
+    barbecho: `<text x="3" y="20" font-family="Nunito, sans-serif" font-weight="900" font-size="11" fill="#2F6F95">z</text>
+      <text x="9" y="14" font-family="Nunito, sans-serif" font-weight="900" font-size="14" fill="#2F6F95">Z</text>`
+  };
+  function cropIcon(k, size) {
+    if (!CROP_SVG[k]) return '';
+    const s = size || 28;
+    return `<svg class="ci" width="${s}" height="${s}" viewBox="2 2 20 20" aria-hidden="true">${CROP_SVG[k]}</svg>`;
+  }
   function icon(name, color, size) {
     return `<svg class="i" width="${size || 22}" height="${size || 22}" viewBox="0 0 24 24" fill="none" stroke="${color || 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PATHS[name] || ''}</svg>`;
   }
@@ -165,7 +201,7 @@
   }
   // Botón flotante del asistente: mejora futura, todavía sin funciones. Solo abre un aviso.
   function aiButton() {
-    return `<button class="fab-ai" data-act="ai" aria-label="${esc(t('ai_button'))}" aria-haspopup="dialog">IA</button>`;
+    return `<button class="fab-ai" data-act="ai" aria-label="${esc(t('ai_button'))}" aria-haspopup="dialog">${icon('sprout', '#FFFFFF', 28)}</button>`;
   }
   function aiSheet() {
     return `<div class="sheet-bg" data-act="ai-close"></div>
@@ -189,7 +225,7 @@
   const GRAIN = ['maize', 'wheat', 'barley', 'oat', 'sorghum', 'rice'], TUBER = ['potato', 'cassava'];
   function cropTile(k, big) {
     const tone = GRAIN.includes(k) ? ' grain' : TUBER.includes(k) ? ' tuber' : '';
-    return `<span class="crop${big ? ' big' : ''}"><span class="em${tone}" aria-hidden="true">${ICON[k] || ''}</span><span class="nm">${esc(cap(cropName(k)))}</span></span>`;
+    return `<span class="crop${big ? ' big' : ''}"><span class="em${tone}" aria-hidden="true">${cropIcon(k, big ? 46 : 38)}</span><span class="nm">${esc(cap(cropName(k)))}</span></span>`;
   }
   function strip(seq) { return `<div class="seq">${seq.map(k => cropTile(k)).join('<span class="arrow" aria-hidden="true">→</span>')}</div>`; }
   function altitudes(p) {
@@ -268,7 +304,7 @@
       <label class="pick"><select data-year="${y}" aria-label="${esc(t('year_' + y))}">
         <option value=""${state.history[y] ? '' : ' selected'}>${esc(t('select_placeholder'))}</option>
         <option value="">${esc(t('dont_know'))}</option>
-        ${keys.map(k => `<option value="${k}"${state.history[y] === k ? ' selected' : ''}>${ICON[k] || ''} ${esc(cap(cropName(k)))}</option>`).join('')}
+        ${keys.map(k => `<option value="${k}"${state.history[y] === k ? ' selected' : ''}>${esc(cap(cropName(k)))}</option>`).join('')}
       </select>${icon('chevron', '#00733A', 22)}</label>`).join('');
     return `${back('to-where')}${dots(2)}
       <h2>${esc(t('q_what'))}</h2>
@@ -436,7 +472,7 @@
   function waterChart(p, r) {
     const crops = r.sequence.filter(k => k !== FALLOW).map(k => crop(p, k));
     const max = Math.max(1, ...crops.map(c => Math.max(c.rain_mm || 0, c.demand_mm || 0)));
-    const rows = crops.map(c => `<div class="water-crop"><strong><span aria-hidden="true">${ICON[c.key] || ''}</span> ${esc(cap(cropName(c.key)))}</strong>
+    const rows = crops.map(c => `<div class="water-crop"><strong>${cropIcon(c.key, 26)} ${esc(cap(cropName(c.key)))}</strong>
         ${hbar(t('rain'), c.rain_mm, 'var(--route-water)', { max, unit: 'mm', small: true })}
         ${hbar(t('demand'), c.demand_mm, 'var(--thirst)', { max, unit: 'mm', small: true })}</div>`).join('');
     return `<div class="legend"><span><i style="background:var(--route-water)"></i>${esc(t('rain'))}</span><span><i style="background:var(--thirst)"></i>${esc(t('demand'))}</span></div>${rows}`;
@@ -464,7 +500,7 @@
     const seq = orderedSequence(p, r);
     const k = seq[state.campaign] || seq[0];
     const tabs = `<div class="chips" role="group">${seq.map((s, i) => `<button class="chip" data-campaign="${i}" aria-pressed="${state.campaign === i}">
-      <span aria-hidden="true">${ICON[s] || ''}</span> ${esc(t('campaign_n', { n: i + 1 }))}: ${esc(cropName(s))}</button>`).join('')}</div>`;
+      ${cropIcon(s, 26)} ${esc(t('campaign_n', { n: i + 1 }))}: ${esc(cropName(s))}</button>`).join('')}</div>`;
     let main, grid = '';
     const frostMonths = new Set(p.monthly.filter(m => (m.frost_days || 0) >= 0.5).map(m => m.month));
     if (k === FALLOW) main = `<div class="plant-card"><h2>${esc(t('rest_season'))}</h2></div>`;
@@ -661,7 +697,7 @@
         : `<li>${icon('sprout', '#00733A', 18)} ${esc(t('milestone_sow', { month: cap(monthName(c.s.getMonth() + 1)), year: c.s.getFullYear() }))}</li>
            <li>${icon('leaf', '#5E6E1F', 18)} ${esc(t('milestone_harvest', { month: cap(monthName(last.getMonth() + 1)), year: last.getFullYear() }))}</li>`;
       return `<li class="step ${st}"><span class="node" aria-hidden="true"></span><div>
-        <div class="step-head"><strong>${esc(t('campaign_n', { n: i + 1 }))}: <span aria-hidden="true">${ICON[c.key] || ''}</span> ${esc(cap(cropName(c.key)))}</strong>
+        <div class="step-head"><strong>${esc(t('campaign_n', { n: i + 1 }))}: ${cropIcon(c.key, 26)} ${esc(cap(cropName(c.key)))}</strong>
         <span class="pill ${st}">${esc(t(label))}</span></div><ul class="marks">${marks}</ul></div></li>`;
     }).join('');
     return `<section class="card"><ol class="timeline">${items}</ol></section>
@@ -808,7 +844,7 @@
       const when = shown.fallow ? ''
         : `<ul class="marks"><li>${icon('sprout', '#00733A', 18)} ${esc(t('milestone_sow', { month: cap(monthName(shown.s.getMonth() + 1)), year: shown.s.getFullYear() }))}</li>
            <li>${icon('leaf', '#5E6B12', 18)} ${esc(t('milestone_harvest', { month: cap(monthName(last.getMonth() + 1)), year: last.getFullYear() }))}</li></ul>`;
-      nowCard = `<div class="now-crop"><span class="em" aria-hidden="true">${ICON[shown.key] || ''}</span><div>
+      nowCard = `<div class="now-crop"><span class="em" aria-hidden="true">${cropIcon(shown.key, 52)}</span><div>
           <strong>${esc(cap(cropName(shown.key)))}</strong> <span class="pill ${st}">${esc(t('status_' + st))}</span>
           <div class="small soft">${esc(t('campaign_n', { n: plan.indexOf(shown) + 1 }))}</div></div></div>${when}`;
     } else nowCard = `<p>${esc(t('task_done'))}</p>`;
