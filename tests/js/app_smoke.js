@@ -33,6 +33,11 @@ r = run(E0 + 'view=farm&pilot=iowa&route=0&farm=2026-11-15&today=2027-06-10&tab=
 assert(text(r.html).includes('我的田地') && text(r.html).includes('6月'), 'chino');
 r = run(E0 + 'view=inicio&lang=ar');
 assert(text(r.html).includes('مرحبًا'), 'árabe');
+// "My field" deshabilitado hasta elegir rotación; luego, habilitado como las demás pestañas.
+r = run(E0 + 'view=routes&pilot=piura_1&care=water&now=potato');
+assert(r.html.includes('class="off" aria-disabled="true"') && !r.html.includes('data-nav="farm"'), 'My field deshabilitado sin rotación');
+r = run(E0 + 'view=inicio&pilot=piura_1&care=water&route=0&farm=2027-01-10&today=2027-02-03');
+assert(r.html.includes('data-nav="farm" aria-current="false"') && !r.html.includes('class="off"'), 'My field habilitado con rotación');
 r = run('#view=home&lang=qu');
 assert(text(r.html).includes('Runasimi (Quechua) is not available yet'), 'idioma sin traducción → aviso, app en inglés');
 

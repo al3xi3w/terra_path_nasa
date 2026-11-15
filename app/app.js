@@ -879,6 +879,10 @@
 
   function nav() {
     return `<nav class="tabbar" aria-label="${esc(t('app_name'))}">${NAV.map(([v, l, ico]) => {
+      // "My field" queda deshabilitado (gris claro, semitransparente) hasta que se elija una rotación.
+      if (v === 'farm' && !state.farm) {
+        return `<button class="off" aria-disabled="true">${icon(ico, '#9AA79F', 24)}<span>${esc(t(l))}</span></button>`;
+      }
       const on = state.view === v || (v === 'routes' && ['why', 'calendar'].includes(state.view));
       return `<button data-nav="${v}" aria-current="${on ? 'page' : 'false'}">${icon(ico, on ? '#00733A' : '#4A6354', 24)}<span>${esc(t(l))}</span></button>`;
     }).join('')}</nav>`;
@@ -986,6 +990,13 @@
 
   render();
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-    navigator.serviceWorker.register('sw.js').catch(() => { /* sin caché: la app sigue funcionando */ });
+    // Cuando se instala una versión nueva, la pantalla se recarga sola una vez para mostrarla.
+    const hadController = !!navigator.serviceWorker.controller;
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (hadController && !reloaded) { reloaded = true; location.reload(); }
+    });
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+      .then(reg => reg.update()).catch(() => { /* sin caché: la app sigue funcionando */ });
   }
 })();
