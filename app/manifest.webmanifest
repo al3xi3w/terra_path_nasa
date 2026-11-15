@@ -1,0 +1,11 @@
+{
+  "name": "Terrapath",
+  "short_name": "Terrapath",
+  "description": "Qué sembrar en tus próximas campañas",
+  "lang": "es",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F3F8EF",
+  "theme_color": "#00733A",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

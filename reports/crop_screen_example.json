@@ -1,0 +1,314 @@
+{
+  "monthly_rows": 57,
+  "evaluations": [
+    {
+      "crop": "Zea mays",
+      "status": "unfavorable",
+      "factors": [
+        {
+          "year": "2021",
+          "variable": "annual_precipitation_mm",
+          "value": 382.70000000000005,
+          "bounds": [
+            400.0,
+            600.0,
+            1200.0,
+            1800.0
+          ],
+          "status": "unfavorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2175"
+        },
+        {
+          "year": "2021",
+          "variable": "annual_mean_temperature_c",
+          "value": 19.75961643835617,
+          "bounds": [
+            10.0,
+            18.0,
+            33.0,
+            47.0
+          ],
+          "status": "favorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2175"
+        },
+        {
+          "year": "2022",
+          "variable": "annual_precipitation_mm",
+          "value": 335.11,
+          "bounds": [
+            400.0,
+            600.0,
+            1200.0,
+            1800.0
+          ],
+          "status": "unfavorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2175"
+        },
+        {
+          "year": "2022",
+          "variable": "annual_mean_temperature_c",
+          "value": 20.023315068493154,
+          "bounds": [
+            10.0,
+            18.0,
+            33.0,
+            47.0
+          ],
+          "status": "favorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2175"
+        },
+        {
+          "year": "2023",
+          "variable": "annual_precipitation_mm",
+          "value": 711.12,
+          "bounds": [
+            400.0,
+            600.0,
+            1200.0,
+            1800.0
+          ],
+          "status": "favorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2175"
+        },
+        {
+          "year": "2023",
+          "variable": "annual_mean_temperature_c",
+          "value": 18.458,
+          "bounds": [
+            10.0,
+            18.0,
+            33.0,
+            47.0
+          ],
+          "status": "favorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2175"
+        },
+        {
+          "year": "2024",
+          "variable": "annual_precipitation_mm",
+          "value": 483.8200000000001,
+          "bounds": [
+            400.0,
+            600.0,
+            1200.0,
+            1800.0
+          ],
+          "status": "marginal",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2175"
+        },
+        {
+          "year": "2024",
+          "variable": "annual_mean_temperature_c",
+          "value": 20.11863387978142,
+          "bounds": [
+            10.0,
+            18.0,
+            33.0,
+            47.0
+          ],
+          "status": "favorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2175"
+        }
+      ],
+      "advantages": [
+        "2021 annual_mean_temperature_c: favorable",
+        "2022 annual_mean_temperature_c: favorable",
+        "2023 annual_precipitation_mm: favorable",
+        "2023 annual_mean_temperature_c: favorable",
+        "2024 annual_mean_temperature_c: favorable"
+      ],
+      "risks": [
+        "2021 annual_precipitation_mm: unfavorable",
+        "2022 annual_precipitation_mm: unfavorable",
+        "2024 annual_precipitation_mm: marginal"
+      ],
+      "missing": [
+        "crop season and phenology",
+        "soil, nutrients and irrigation availability",
+        "validated local suitability labels",
+        "Local calibration for values outside optimal but inside absolute bounds"
+      ],
+      "assumptions": {
+        "scope": "annual calendar-year climate screening, not growing-season suitability",
+        "temperature_rule": "compare annual mean to EcoCrop temperature bounds; configurable design assumption, not validated biological response"
+      },
+      "gaez": "Excluded: local layers derive from AgERA5; no ERA5 allowed",
+      "rotation_recommendation": null
+    },
+    {
+      "crop": "Triticum aestivum",
+      "status": "insufficiently_documented",
+      "factors": [
+        {
+          "year": "2021",
+          "variable": "annual_precipitation_mm",
+          "value": 382.70000000000005,
+          "bounds": [
+            300.0,
+            750.0,
+            900.0,
+            1600.0
+          ],
+          "status": "marginal",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2114"
+        },
+        {
+          "year": "2021",
+          "variable": "annual_mean_temperature_c",
+          "value": 19.75961643835617,
+          "bounds": [
+            5.0,
+            15.0,
+            23.0,
+            27.0
+          ],
+          "status": "favorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2114"
+        },
+        {
+          "year": "2022",
+          "variable": "annual_precipitation_mm",
+          "value": 335.11,
+          "bounds": [
+            300.0,
+            750.0,
+            900.0,
+            1600.0
+          ],
+          "status": "marginal",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2114"
+        },
+        {
+          "year": "2022",
+          "variable": "annual_mean_temperature_c",
+          "value": 20.023315068493154,
+          "bounds": [
+            5.0,
+            15.0,
+            23.0,
+            27.0
+          ],
+          "status": "favorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2114"
+        },
+        {
+          "year": "2023",
+          "variable": "annual_precipitation_mm",
+          "value": 711.12,
+          "bounds": [
+            300.0,
+            750.0,
+            900.0,
+            1600.0
+          ],
+          "status": "marginal",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2114"
+        },
+        {
+          "year": "2023",
+          "variable": "annual_mean_temperature_c",
+          "value": 18.458,
+          "bounds": [
+            5.0,
+            15.0,
+            23.0,
+            27.0
+          ],
+          "status": "favorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2114"
+        },
+        {
+          "year": "2024",
+          "variable": "annual_precipitation_mm",
+          "value": 483.8200000000001,
+          "bounds": [
+            300.0,
+            750.0,
+            900.0,
+            1600.0
+          ],
+          "status": "marginal",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2114"
+        },
+        {
+          "year": "2024",
+          "variable": "annual_mean_temperature_c",
+          "value": 20.11863387978142,
+          "bounds": [
+            5.0,
+            15.0,
+            23.0,
+            27.0
+          ],
+          "status": "favorable",
+          "source": "POWER + EcoCrop *_usable",
+          "ecocrop_code": "2114"
+        }
+      ],
+      "advantages": [
+        "2021 annual_mean_temperature_c: favorable",
+        "2022 annual_mean_temperature_c: favorable",
+        "2023 annual_mean_temperature_c: favorable",
+        "2024 annual_mean_temperature_c: favorable"
+      ],
+      "risks": [
+        "2021 annual_precipitation_mm: marginal",
+        "2022 annual_precipitation_mm: marginal",
+        "2023 annual_precipitation_mm: marginal",
+        "2024 annual_precipitation_mm: marginal"
+      ],
+      "missing": [
+        "crop season and phenology",
+        "soil, nutrients and irrigation availability",
+        "validated local suitability labels",
+        "Local calibration for values outside optimal but inside absolute bounds"
+      ],
+      "assumptions": {
+        "scope": "annual calendar-year climate screening, not growing-season suitability",
+        "temperature_rule": "compare annual mean to EcoCrop temperature bounds; configurable design assumption, not validated biological response"
+      },
+      "gaez": "Excluded: local layers derive from AgERA5; no ERA5 allowed",
+      "rotation_recommendation": null
+    }
+  ],
+  "rotation": {
+    "current_crop": null,
+    "candidates": [
+      "Zea mays",
+      "Triticum aestivum"
+    ],
+    "latitude": 36.59,
+    "longitude": -119.52,
+    "start": "2021-01",
+    "end": "2024-12",
+    "recommendation": null,
+    "status": "insufficiently_documented",
+    "available_constraints": [
+      "valid EcoCrop ranges for exact identified crops",
+      "climate coverage and quality flags"
+    ],
+    "required": [
+      "verified crop families and transition rules",
+      "local calendar and season lengths",
+      "soil and nutrient state",
+      "previous crop history",
+      "water supply",
+      "costs and objectives"
+    ]
+  }
+}

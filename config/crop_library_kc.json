@@ -1,0 +1,46 @@
+{
+ "note": "Correspondencia cultivo -> etiqueta exacta de la Tabla 12 de FAO-56. SELECCIÓN DECLARADA pendiente de revisión agronómica. Un valor null significa que no hay etiqueta aplicable entre las verificadas localmente; no se rellena por parecido de texto. Una lista de etiquetas significa: se usa solo el valor en que todas coinciden; lo que difiere queda nulo (trigo: Kc_mid 1,15 en las tres; Kc_ini difiere). Un Kc_mid en rango queda sin valor único (girasol).",
+ "status": "declared_pending_agronomist_review",
+ "sources": [
+  "data/processed/fao56_kc_verified.parquet",
+  "config/fao56_stages_verified.json"
+ ],
+ "mapping": {
+  "maize": "Maize, Field (grain)",
+  "soybean": "Soybeans",
+  "barley": "Barley",
+  "oat": "Oats",
+  "lentil": "Lentil",
+  "wheat": [
+   "Spring Wheat",
+   "Winter Wheat - with frozen soils",
+   "Winter Wheat - with non-frozen soils"
+  ],
+  "sorghum": null,
+  "alfalfa": "Alfalfa Hay - averaged cutting effects",
+  "potato": "Potato",
+  "rice": null,
+  "cassava": null,
+  "sunflower": "Sunflower",
+  "tarwi": null,
+  "bean_faba": null,
+  "clover_red": null,
+  "bean_common": "Beans, dry and Pulses"
+ },
+ "pending": {
+  "sorghum": "La única etiqueta local es 'Sorghum - sweet' (sorgo dulce). La especie de la biblioteca es Sorghum bicolor de grano; FAO-56 trae 'Sorghum - grain' en una fila aún no extraída.",
+  "rice": "No extraída.",
+  "cassava": "No extraída.",
+  "tarwi": "FAO-56 no trae Lupinus mutabilis.",
+  "bean_faba": "No extraída.",
+  "clover_red": "No extraída."
+ },
+ "decisions_2026_11_14": {
+  "potato": "Fila 'Potato' de la Tabla 12 (Solanum tuberosum); antes pendiente porque no estaba extraída.",
+  "alfalfa": "'Alfalfa Hay - averaged cutting effects': la nota 13 la define como el Kc medio de toda la temporada de heno; 'for seed' es otro manejo.",
+  "wheat": "Las tres etiquetas de trigo comparten Kc_mid 1,15; no se elige entre primavera e invierno.",
+  "sunflower": "Kc_mid 1,0-1,15 (nota 9: el bajo es para secano de baja densidad). Elegir un extremo es decisión humana pendiente; mientras tanto sin valor único.",
+  "clover_red": "Sin cambio: FAO-56 solo trae 'Clover hay, Berseem' (Trifolium alexandrinum), otra especie.",
+  "bean_common": "Frijol seco (Phaseolus vulgaris) -> 'Beans, dry and Pulses'. Etiqueta genérica de legumbre seca; nota 2: 1,20 si se conduce en tutor (frijol de enrame), no aplicado."
+ }
+}

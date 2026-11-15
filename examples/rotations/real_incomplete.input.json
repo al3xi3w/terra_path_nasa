@@ -1,0 +1,22 @@
+{
+  "parcel": {
+    "latitude": 36.59,
+    "longitude": -119.52,
+    "current_crop": null,
+    "previous_crops": [],
+    "sowing_date": "2023-01-01",
+    "horizon_end": "2023-12-31",
+    "candidates": [
+      {
+        "crop": "Zea mays"
+      },
+      {
+        "crop": "Glycine max"
+      },
+      {
+        "crop": "Triticum aestivum"
+      }
+    ]
+  },
+  "context": "Actual available POWER location; dates/candidates are a proposed evaluation horizon, not verified farmer records; previous crop unknown"
+}

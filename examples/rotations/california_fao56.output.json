@@ -1,0 +1,1555 @@
+{
+  "status": "abstained",
+  "evaluation": "experimental_not_agronomically_validated",
+  "recommendation": null,
+  "constraints": {
+    "seasons": [
+      {
+        "start": "2023-04-01",
+        "end": "2023-08-31"
+      },
+      {
+        "start": "2023-12-01",
+        "end": "2024-05-31"
+      }
+    ],
+    "crops": {
+      "Zea mays": [
+        {
+          "cycle": {
+            "state": "allowed",
+            "evidence": [
+              {
+                "source": "FAO-56 Table 11 (declared row)",
+                "file": null,
+                "sha256": null,
+                "variable": "total",
+                "unit": "day",
+                "period": null,
+                "location": null,
+                "value": 150,
+                "reason": "total stage length vs season length 153 days"
+              }
+            ],
+            "needs": []
+          },
+          "cycle_days": 150,
+          "climate": {
+            "state": "allowed",
+            "evidence": [
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "T2M",
+                "unit": "C",
+                "period": "2023-04-01/2023-08-31",
+                "location": {
+                  "latitude": 36.59,
+                  "longitude": -119.52,
+                  "support": "coarse model grid served as point; not parcel/station measurement"
+                },
+                "value": 24.016013071895422,
+                "reason": "season mean of complete daily series"
+              },
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "tmin/tmax",
+                "unit": "C",
+                "period": null,
+                "location": null,
+                "value": [
+                  10.0,
+                  47.0
+                ],
+                "reason": "absolute temperature range; rule = season mean inside range (design assumption)"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "6ce05bbd79e0cc851237b5dea02cd2c179799fe6576afae9fb7d4d4cdee11e48",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-04",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.01600000075995922,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "127e4be3863a22c542a3f4dc24bb299e755c35cca53acfbbab63ade80b65ed7c",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-05",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.013000000268220901,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "7e9711a791f6d44bcd59387914376056bbf5f201ac5556980e9cd4b2d340e7c0",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-06",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.003000000026077032,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "67b6355d8faa6eb8a14bf547ae9747dfee438457033f6b64da783ac4ef23d0e0",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-07",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.0010000000474974513,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "3db5b6c90197f3f51a9ac145cada458739f29490acb14f579ea98fc59efd1e94",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-08",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.026000000536441803,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              }
+            ],
+            "needs": []
+          },
+          "irrigation": null,
+          "calendar": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO Crop Calendar",
+                "file": "data/processed/agronomy-countries.parquet",
+                "sha256": "f8e10c54830278bb5843bc77c00422c42b60a8769bd2919b150b81f6026cc44d",
+                "variable": "id",
+                "unit": null,
+                "period": null,
+                "location": {
+                  "country_iso2": "US"
+                },
+                "value": null,
+                "reason": "country absent from local FAO Crop Calendar dataset"
+              }
+            ],
+            "needs": [
+              "verified crop calendar for US (FAO dataset has none)"
+            ]
+          },
+          "soil_nutrients": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "local datasets",
+                "file": null,
+                "sha256": null,
+                "variable": null,
+                "unit": null,
+                "period": null,
+                "location": null,
+                "value": null,
+                "reason": "no validated soil nutrient data (SMAP is moisture; empty original)"
+              }
+            ],
+            "needs": [
+              "soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+              "soil nutrient assessment (lab/agronomist) declared with provenance"
+            ]
+          },
+          "water": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO-56 selection (declared)",
+                "reason": "Demonstration selection; Table 11 region text includes 'Calif.'; needs agronomist confirmation",
+                "variable": "table11_id/table12_label",
+                "value": [
+                  "T11-mz-5",
+                  "Maize, Field (grain)"
+                ]
+              },
+              {
+                "source": "FAO-56",
+                "file": "config/fao56_stages_verified.json",
+                "sha256": "bba2b84e839336453556ebe8422dc862f10831deda1a8ab46bfd3a9092d8665a",
+                "reason": "Table 11 row T11-mz-5 (April, Spain (spr, sum.); Calif.), PDF p.132",
+                "variable": "L_ini/L_dev/L_mid/L_late",
+                "unit": "day",
+                "value": [
+                  30,
+                  40,
+                  50,
+                  30
+                ]
+              },
+              {
+                "source": "FAO-56",
+                "file": "config/fao56_stages_verified.json",
+                "sha256": "bba2b84e839336453556ebe8422dc862f10831deda1a8ab46bfd3a9092d8665a",
+                "reason": "Table 12 'Maize, Field (grain)', PDF p.137: Kc ini blank (group 0.3 not propagated); footnote 11: 0.60 harvest at high grain moisture, 0.35 after complete field drying (~18% moisture)",
+                "variable": "Kc ini/mid/end, h",
+                "unit": "dimensionless, m",
+                "value": [
+                  null,
+                  1.2,
+                  [
+                    0.35,
+                    0.6
+                  ],
+                  [
+                    2,
+                    2
+                  ]
+                ]
+              },
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "ET0 (FAO-56 PM, ea from RHmean)",
+                "unit": "mm",
+                "period": "2023-04-01/2023-08-28",
+                "location": {
+                  "latitude": 36.59,
+                  "longitude": -119.52,
+                  "elevation_m": 249.47,
+                  "elevation_support": "MERRA-2 0.5x0.625 degree region average, not parcel elevation"
+                },
+                "value": 875.21,
+                "reason": "inputs T2M_MAX, T2M_MIN, RH2M, WS2M, ALLSKY_SFC_SW_DWN; G=0; albedo 0.23"
+              },
+              {
+                "source": "FAO-56 Annex 7 (eq. 7-1…7-8, 59)",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "period": "2023-04-01/2023-04-30",
+                "variable": "Kc ini [lo, hi]",
+                "unit": "dimensionless",
+                "value": [
+                  0.045,
+                  0.134
+                ],
+                "reason": "wetting scenarios {'rain_infiltrated': {'events': 1, 'tw_days': 20.0, 'mean_depth_mm': 1.1}, 'rain_ignored': {'events': 0, 'tw_days': 60.0, 'mean_depth_mm': 0.0}} (POWER rain + declared irrigation: Demonstration: no irrigation during initial stage (Kc ini computed from POWER rain, FAO-56 Annex 7); needs farmer confirmation); ET0 3.742 mm/d; figures ['29', '30a', '30b']; envelope over rain infiltrated/ignored; furrow/trickle partial wetting not supported"
+              },
+              {
+                "source": "FAO-56 eq. 62/66",
+                "reason": "Kc mid/end adjusted with stage-mean u2 and RHmin ∈ [20, min(RHmean, 80)] %; interval over height range",
+                "variable": "Kc mid adjusted [lo, hi]; Kc end adjusted [lo, hi]",
+                "unit": "dimensionless",
+                "value": [
+                  [
+                    1.236,
+                    1.276
+                  ],
+                  [
+                    0.35,
+                    0.676
+                  ]
+                ]
+              },
+              {
+                "source": "FAO-56 single Kc",
+                "reason": "sum of daily Kc × ET0 over the crop period",
+                "variable": "ETc [lo, hi]",
+                "unit": "mm",
+                "period": "2023-04-01/2023-08-28",
+                "value": [
+                  751.07,
+                  824.55
+                ]
+              },
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "PRECTOTCORR",
+                "unit": "mm",
+                "period": "2023-04-01/2023-08-28",
+                "value": 58.87,
+                "reason": "total rainfall during crop period; effective share unknown"
+              },
+              {
+                "source": "FAO-56 water balance bounds",
+                "file": null,
+                "sha256": null,
+                "variable": "irrigation_requirement [lower, upper]",
+                "unit": "mm",
+                "period": null,
+                "location": null,
+                "value": [
+                  null,
+                  null
+                ],
+                "reason": "lower = ETc_low − rainfall − initial soil water (net); upper = ETc_high / efficiency (gross); no leaching requirement"
+              }
+            ],
+            "needs": [
+              "declared water availability for season 1 (mm)",
+              "declared irrigation efficiency (0–1] to bound gross requirement",
+              "declared initial plant-available soil water for season 1 (mm) to bound net requirement"
+            ]
+          }
+        },
+        {
+          "cycle": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "gmin/gmax",
+                "unit": "day",
+                "period": null,
+                "location": null,
+                "value": [
+                  65.0,
+                  365.0
+                ],
+                "reason": "season length 183 days (2023-12-01/2024-05-31)"
+              }
+            ],
+            "needs": [
+              "declared cultivar cycle (days): season length is between EcoCrop gmin and gmax"
+            ]
+          },
+          "cycle_days": null,
+          "climate": {
+            "state": "allowed",
+            "evidence": [
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "T2M",
+                "unit": "C",
+                "period": "2023-12-01/2024-05-31",
+                "location": {
+                  "latitude": 36.59,
+                  "longitude": -119.52,
+                  "support": "coarse model grid served as point; not parcel/station measurement"
+                },
+                "value": 14.04311475409836,
+                "reason": "season mean of complete daily series"
+              },
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "tmin/tmax",
+                "unit": "C",
+                "period": null,
+                "location": null,
+                "value": [
+                  10.0,
+                  47.0
+                ],
+                "reason": "absolute temperature range; rule = season mean inside range (design assumption)"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "8c1c358e351ebecc0a0f7194890a0e10fe2245e12ac831f28c1ae0a3302f16db",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-12",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.06599999964237213,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "b6fe17b948dd4cd4a9c3ae1e7515772a483ce05ba2a1300e3e1ef8a12fe18341",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-01",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.08700000494718552,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "96b6f80c8bb0dc3a03e99fc852e610b75aeacc0062a6fac197a4ad88557df82f",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-02",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.1940000057220459,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "a41a39ac3d2f53ddc8b4eed38f6f25e918390149c50561c45aff211023c7ee2c",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-03",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.10200000554323196,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "505937dd75aca9ed76266119c4ac99a552c49d7502c8597e7663b9460f28ff4a",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-04",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.08000000566244125,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "b00583d73f6488ea628471f0efa39d2d29a0f3e576dfe418b11e958ce6d7db4a",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-05",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.017000000923871994,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              }
+            ],
+            "needs": []
+          },
+          "irrigation": null,
+          "calendar": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO Crop Calendar",
+                "file": "data/processed/agronomy-countries.parquet",
+                "sha256": "f8e10c54830278bb5843bc77c00422c42b60a8769bd2919b150b81f6026cc44d",
+                "variable": "id",
+                "unit": null,
+                "period": null,
+                "location": {
+                  "country_iso2": "US"
+                },
+                "value": null,
+                "reason": "country absent from local FAO Crop Calendar dataset"
+              }
+            ],
+            "needs": [
+              "verified crop calendar for US (FAO dataset has none)"
+            ]
+          },
+          "soil_nutrients": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "local datasets",
+                "file": null,
+                "sha256": null,
+                "variable": null,
+                "unit": null,
+                "period": null,
+                "location": null,
+                "value": null,
+                "reason": "no validated soil nutrient data (SMAP is moisture; empty original)"
+              }
+            ],
+            "needs": [
+              "soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+              "soil nutrient assessment (lab/agronomist) declared with provenance"
+            ]
+          },
+          "water": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO-56 selection (declared)",
+                "reason": "Demonstration selection; Table 11 region text includes 'Calif.'; needs agronomist confirmation",
+                "variable": "table11_id/table12_label",
+                "value": [
+                  "T11-mz-5",
+                  "Maize, Field (grain)"
+                ]
+              },
+              {
+                "source": "FAO-56",
+                "file": "config/fao56_stages_verified.json",
+                "sha256": "bba2b84e839336453556ebe8422dc862f10831deda1a8ab46bfd3a9092d8665a",
+                "reason": "Table 11 row T11-mz-5 (April, Spain (spr, sum.); Calif.), PDF p.132",
+                "variable": "L_ini/L_dev/L_mid/L_late",
+                "unit": "day",
+                "value": [
+                  30,
+                  40,
+                  50,
+                  30
+                ]
+              }
+            ],
+            "needs": [
+              "declared water availability for season 2 (mm)",
+              "Table 11 row whose plant date (April) includes planting month 12"
+            ]
+          }
+        }
+      ],
+      "Glycine max": [
+        {
+          "cycle": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "gmin/gmax",
+                "unit": "day",
+                "period": null,
+                "location": null,
+                "value": [
+                  75.0,
+                  180.0
+                ],
+                "reason": "season length 153 days (2023-04-01/2023-08-31)"
+              }
+            ],
+            "needs": [
+              "declared cultivar cycle (days): season length is between EcoCrop gmin and gmax"
+            ]
+          },
+          "cycle_days": null,
+          "climate": {
+            "state": "allowed",
+            "evidence": [
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "T2M",
+                "unit": "C",
+                "period": "2023-04-01/2023-08-31",
+                "location": {
+                  "latitude": 36.59,
+                  "longitude": -119.52,
+                  "support": "coarse model grid served as point; not parcel/station measurement"
+                },
+                "value": 24.016013071895422,
+                "reason": "season mean of complete daily series"
+              },
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "tmin/tmax",
+                "unit": "C",
+                "period": null,
+                "location": null,
+                "value": [
+                  10.0,
+                  38.0
+                ],
+                "reason": "absolute temperature range; rule = season mean inside range (design assumption)"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "6ce05bbd79e0cc851237b5dea02cd2c179799fe6576afae9fb7d4d4cdee11e48",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-04",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.01600000075995922,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "127e4be3863a22c542a3f4dc24bb299e755c35cca53acfbbab63ade80b65ed7c",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-05",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.013000000268220901,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "7e9711a791f6d44bcd59387914376056bbf5f201ac5556980e9cd4b2d340e7c0",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-06",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.003000000026077032,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "67b6355d8faa6eb8a14bf547ae9747dfee438457033f6b64da783ac4ef23d0e0",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-07",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.0010000000474974513,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "3db5b6c90197f3f51a9ac145cada458739f29490acb14f579ea98fc59efd1e94",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-08",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.026000000536441803,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              }
+            ],
+            "needs": []
+          },
+          "irrigation": null,
+          "calendar": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO Crop Calendar",
+                "file": "data/processed/agronomy-countries.parquet",
+                "sha256": "f8e10c54830278bb5843bc77c00422c42b60a8769bd2919b150b81f6026cc44d",
+                "variable": "id",
+                "unit": null,
+                "period": null,
+                "location": {
+                  "country_iso2": "US"
+                },
+                "value": null,
+                "reason": "country absent from local FAO Crop Calendar dataset"
+              }
+            ],
+            "needs": [
+              "verified crop calendar for US (FAO dataset has none)"
+            ]
+          },
+          "soil_nutrients": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "local datasets",
+                "file": null,
+                "sha256": null,
+                "variable": null,
+                "unit": null,
+                "period": null,
+                "location": null,
+                "value": null,
+                "reason": "no validated soil nutrient data (SMAP is moisture; empty original)"
+              }
+            ],
+            "needs": [
+              "soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+              "soil nutrient assessment (lab/agronomist) declared with provenance"
+            ]
+          },
+          "water": {
+            "state": "unknown",
+            "evidence": [],
+            "needs": [
+              "declared water availability for season 1 (mm)",
+              "irrigation requirement: declared (mm, with provenance) or FAO-56 selection (Table 11 row, Table 12 label) to compute it"
+            ]
+          }
+        },
+        {
+          "cycle": {
+            "state": "allowed",
+            "evidence": [
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "gmin/gmax",
+                "unit": "day",
+                "period": null,
+                "location": null,
+                "value": [
+                  75.0,
+                  180.0
+                ],
+                "reason": "season length 183 days (2023-12-01/2024-05-31)"
+              }
+            ],
+            "needs": []
+          },
+          "cycle_days": 180.0,
+          "climate": {
+            "state": "allowed",
+            "evidence": [
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "T2M",
+                "unit": "C",
+                "period": "2023-12-01/2024-05-31",
+                "location": {
+                  "latitude": 36.59,
+                  "longitude": -119.52,
+                  "support": "coarse model grid served as point; not parcel/station measurement"
+                },
+                "value": 14.04311475409836,
+                "reason": "season mean of complete daily series"
+              },
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "tmin/tmax",
+                "unit": "C",
+                "period": null,
+                "location": null,
+                "value": [
+                  10.0,
+                  38.0
+                ],
+                "reason": "absolute temperature range; rule = season mean inside range (design assumption)"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "8c1c358e351ebecc0a0f7194890a0e10fe2245e12ac831f28c1ae0a3302f16db",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-12",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.06599999964237213,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "b6fe17b948dd4cd4a9c3ae1e7515772a483ce05ba2a1300e3e1ef8a12fe18341",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-01",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.08700000494718552,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "96b6f80c8bb0dc3a03e99fc852e610b75aeacc0062a6fac197a4ad88557df82f",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-02",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.1940000057220459,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "a41a39ac3d2f53ddc8b4eed38f6f25e918390149c50561c45aff211023c7ee2c",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-03",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.10200000554323196,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "505937dd75aca9ed76266119c4ac99a552c49d7502c8597e7663b9460f28ff4a",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-04",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.08000000566244125,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "b00583d73f6488ea628471f0efa39d2d29a0f3e576dfe418b11e958ce6d7db4a",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-05",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.017000000923871994,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              }
+            ],
+            "needs": []
+          },
+          "irrigation": null,
+          "calendar": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO Crop Calendar",
+                "file": "data/processed/agronomy-countries.parquet",
+                "sha256": "f8e10c54830278bb5843bc77c00422c42b60a8769bd2919b150b81f6026cc44d",
+                "variable": "id",
+                "unit": null,
+                "period": null,
+                "location": {
+                  "country_iso2": "US"
+                },
+                "value": null,
+                "reason": "country absent from local FAO Crop Calendar dataset"
+              }
+            ],
+            "needs": [
+              "verified crop calendar for US (FAO dataset has none)"
+            ]
+          },
+          "soil_nutrients": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "local datasets",
+                "file": null,
+                "sha256": null,
+                "variable": null,
+                "unit": null,
+                "period": null,
+                "location": null,
+                "value": null,
+                "reason": "no validated soil nutrient data (SMAP is moisture; empty original)"
+              }
+            ],
+            "needs": [
+              "soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+              "soil nutrient assessment (lab/agronomist) declared with provenance"
+            ]
+          },
+          "water": {
+            "state": "unknown",
+            "evidence": [],
+            "needs": [
+              "declared water availability for season 2 (mm)",
+              "irrigation requirement: declared (mm, with provenance) or FAO-56 selection (Table 11 row, Table 12 label) to compute it"
+            ]
+          }
+        }
+      ],
+      "Triticum aestivum": [
+        {
+          "cycle": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "gmin/gmax",
+                "unit": "day",
+                "period": null,
+                "location": null,
+                "value": [
+                  90.0,
+                  250.0
+                ],
+                "reason": "season length 153 days (2023-04-01/2023-08-31)"
+              }
+            ],
+            "needs": [
+              "declared cultivar cycle (days): season length is between EcoCrop gmin and gmax"
+            ]
+          },
+          "cycle_days": null,
+          "climate": {
+            "state": "allowed",
+            "evidence": [
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "T2M",
+                "unit": "C",
+                "period": "2023-04-01/2023-08-31",
+                "location": {
+                  "latitude": 36.59,
+                  "longitude": -119.52,
+                  "support": "coarse model grid served as point; not parcel/station measurement"
+                },
+                "value": 24.016013071895422,
+                "reason": "season mean of complete daily series"
+              },
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "tmin/tmax",
+                "unit": "C",
+                "period": null,
+                "location": null,
+                "value": [
+                  5.0,
+                  27.0
+                ],
+                "reason": "absolute temperature range; rule = season mean inside range (design assumption)"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "6ce05bbd79e0cc851237b5dea02cd2c179799fe6576afae9fb7d4d4cdee11e48",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-04",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.01600000075995922,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "127e4be3863a22c542a3f4dc24bb299e755c35cca53acfbbab63ade80b65ed7c",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-05",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.013000000268220901,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "7e9711a791f6d44bcd59387914376056bbf5f201ac5556980e9cd4b2d340e7c0",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-06",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.003000000026077032,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "67b6355d8faa6eb8a14bf547ae9747dfee438457033f6b64da783ac4ef23d0e0",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-07",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.0010000000474974513,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "3db5b6c90197f3f51a9ac145cada458739f29490acb14f579ea98fc59efd1e94",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-08",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.026000000536441803,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              }
+            ],
+            "needs": []
+          },
+          "irrigation": null,
+          "calendar": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO Crop Calendar",
+                "file": "data/processed/agronomy-countries.parquet",
+                "sha256": "f8e10c54830278bb5843bc77c00422c42b60a8769bd2919b150b81f6026cc44d",
+                "variable": "id",
+                "unit": null,
+                "period": null,
+                "location": {
+                  "country_iso2": "US"
+                },
+                "value": null,
+                "reason": "country absent from local FAO Crop Calendar dataset"
+              }
+            ],
+            "needs": [
+              "verified crop calendar for US (FAO dataset has none)"
+            ]
+          },
+          "soil_nutrients": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "local datasets",
+                "file": null,
+                "sha256": null,
+                "variable": null,
+                "unit": null,
+                "period": null,
+                "location": null,
+                "value": null,
+                "reason": "no validated soil nutrient data (SMAP is moisture; empty original)"
+              }
+            ],
+            "needs": [
+              "soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+              "soil nutrient assessment (lab/agronomist) declared with provenance"
+            ]
+          },
+          "water": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO-56 selection (declared)",
+                "reason": "Demonstration selection; Table 11 region 'Calif., USA'; winter type and non-frozen soils need agronomist confirmation",
+                "variable": "table11_id/table12_label",
+                "value": [
+                  "T11-ww-1",
+                  "Winter Wheat - with non-frozen soils"
+                ]
+              },
+              {
+                "source": "FAO-56",
+                "file": "config/fao56_stages_verified.json",
+                "sha256": "bba2b84e839336453556ebe8422dc862f10831deda1a8ab46bfd3a9092d8665a",
+                "reason": "Table 11 row T11-ww-1 (December, Calif., USA), PDF p.132",
+                "variable": "L_ini/L_dev/L_mid/L_late",
+                "unit": "day",
+                "value": [
+                  20,
+                  60,
+                  70,
+                  30
+                ]
+              }
+            ],
+            "needs": [
+              "declared water availability for season 1 (mm)",
+              "Table 11 row whose plant date (December) includes planting month 4"
+            ]
+          }
+        },
+        {
+          "cycle": {
+            "state": "allowed",
+            "evidence": [
+              {
+                "source": "FAO-56 Table 11 (declared row)",
+                "file": null,
+                "sha256": null,
+                "variable": "total",
+                "unit": "day",
+                "period": null,
+                "location": null,
+                "value": 180,
+                "reason": "total stage length vs season length 183 days"
+              }
+            ],
+            "needs": []
+          },
+          "cycle_days": 180,
+          "climate": {
+            "state": "allowed",
+            "evidence": [
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "T2M",
+                "unit": "C",
+                "period": "2023-12-01/2024-05-31",
+                "location": {
+                  "latitude": 36.59,
+                  "longitude": -119.52,
+                  "support": "coarse model grid served as point; not parcel/station measurement"
+                },
+                "value": 14.04311475409836,
+                "reason": "season mean of complete daily series"
+              },
+              {
+                "source": "FAO EcoCrop",
+                "file": "data/processed/ecocrop_validated.parquet",
+                "sha256": "2549efa3327382af12132ec8a487a73d7e9f0a9f0d0ebc6637d46a88ac9ca166",
+                "variable": "tmin/tmax",
+                "unit": "C",
+                "period": null,
+                "location": null,
+                "value": [
+                  5.0,
+                  27.0
+                ],
+                "reason": "absolute temperature range; rule = season mean inside range (design assumption)"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "8c1c358e351ebecc0a0f7194890a0e10fe2245e12ac831f28c1ae0a3302f16db",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2023-12",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.06599999964237213,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "b6fe17b948dd4cd4a9c3ae1e7515772a483ce05ba2a1300e3e1ef8a12fe18341",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-01",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.08700000494718552,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "96b6f80c8bb0dc3a03e99fc852e610b75aeacc0062a6fac197a4ad88557df82f",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-02",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.1940000057220459,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "a41a39ac3d2f53ddc8b4eed38f6f25e918390149c50561c45aff211023c7ee2c",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-03",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.10200000554323196,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "505937dd75aca9ed76266119c4ac99a552c49d7502c8597e7663b9460f28ff4a",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-04",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.08000000566244125,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              },
+              {
+                "source": "NASA GPM IMERG monthly (via california_monthly_climate)",
+                "file": "data/processed/california_monthly_climate.parquet",
+                "sha256": "b00583d73f6488ea628471f0efa39d2d29a0f3e576dfe418b11e958ce6d7db4a",
+                "variable": "precipitation",
+                "unit": "mm/hr (monthly mean rate)",
+                "period": "2024-05",
+                "location": {
+                  "cell_latitude": 36.54999923706055,
+                  "cell_longitude": -119.54999542236328
+                },
+                "value": 0.017000000923871994,
+                "reason": "context only; rainfall gating is unknown because EcoCrop rainfall bounds are annual"
+              }
+            ],
+            "needs": []
+          },
+          "irrigation": null,
+          "calendar": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO Crop Calendar",
+                "file": "data/processed/agronomy-countries.parquet",
+                "sha256": "f8e10c54830278bb5843bc77c00422c42b60a8769bd2919b150b81f6026cc44d",
+                "variable": "id",
+                "unit": null,
+                "period": null,
+                "location": {
+                  "country_iso2": "US"
+                },
+                "value": null,
+                "reason": "country absent from local FAO Crop Calendar dataset"
+              }
+            ],
+            "needs": [
+              "verified crop calendar for US (FAO dataset has none)"
+            ]
+          },
+          "soil_nutrients": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "local datasets",
+                "file": null,
+                "sha256": null,
+                "variable": null,
+                "unit": null,
+                "period": null,
+                "location": null,
+                "value": null,
+                "reason": "no validated soil nutrient data (SMAP is moisture; empty original)"
+              }
+            ],
+            "needs": [
+              "soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+              "soil nutrient assessment (lab/agronomist) declared with provenance"
+            ]
+          },
+          "water": {
+            "state": "unknown",
+            "evidence": [
+              {
+                "source": "FAO-56 selection (declared)",
+                "reason": "Demonstration selection; Table 11 region 'Calif., USA'; winter type and non-frozen soils need agronomist confirmation",
+                "variable": "table11_id/table12_label",
+                "value": [
+                  "T11-ww-1",
+                  "Winter Wheat - with non-frozen soils"
+                ]
+              },
+              {
+                "source": "FAO-56",
+                "file": "config/fao56_stages_verified.json",
+                "sha256": "bba2b84e839336453556ebe8422dc862f10831deda1a8ab46bfd3a9092d8665a",
+                "reason": "Table 11 row T11-ww-1 (December, Calif., USA), PDF p.132",
+                "variable": "L_ini/L_dev/L_mid/L_late",
+                "unit": "day",
+                "value": [
+                  20,
+                  60,
+                  70,
+                  30
+                ]
+              },
+              {
+                "source": "FAO-56",
+                "file": "config/fao56_stages_verified.json",
+                "sha256": "bba2b84e839336453556ebe8422dc862f10831deda1a8ab46bfd3a9092d8665a",
+                "reason": "Table 12 'Winter Wheat - with non-frozen soils', PDF p.137: Footnote 10",
+                "variable": "Kc ini/mid/end, h",
+                "unit": "dimensionless, m",
+                "value": [
+                  0.7,
+                  1.15,
+                  [
+                    0.25,
+                    0.4
+                  ],
+                  [
+                    1,
+                    1
+                  ]
+                ]
+              },
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "ET0 (FAO-56 PM, ea from RHmean)",
+                "unit": "mm",
+                "period": "2023-12-01/2024-05-28",
+                "location": {
+                  "latitude": 36.59,
+                  "longitude": -119.52,
+                  "elevation_m": 249.47,
+                  "elevation_support": "MERRA-2 0.5x0.625 degree region average, not parcel elevation"
+                },
+                "value": 481.91,
+                "reason": "inputs T2M_MAX, T2M_MIN, RH2M, WS2M, ALLSKY_SFC_SW_DWN; G=0; albedo 0.23"
+              },
+              {
+                "source": "FAO-56 eq. 62/66",
+                "reason": "Kc mid/end adjusted with stage-mean u2 and RHmin ∈ [20, min(RHmean, 80)] %; interval over height range",
+                "variable": "Kc mid adjusted [lo, hi]; Kc end adjusted [lo, hi]",
+                "unit": "dimensionless",
+                "value": [
+                  [
+                    1.066,
+                    1.209
+                  ],
+                  [
+                    0.25,
+                    0.4
+                  ]
+                ]
+              },
+              {
+                "source": "FAO-56 single Kc",
+                "reason": "sum of daily Kc × ET0 over the crop period",
+                "variable": "ETc [lo, hi]",
+                "unit": "mm",
+                "period": "2023-12-01/2024-05-28",
+                "value": [
+                  414.49,
+                  474.76
+                ]
+              },
+              {
+                "source": "NASA POWER",
+                "file": "data/raw/power/POWER_Point_Daily_20210101_20251231_036d59N_0119d52W_LST.csv",
+                "sha256": "163392a9236bdc5a1535f7f62775d14be852dd6ee29d516fc7cc960d9b958acc",
+                "variable": "PRECTOTCORR",
+                "unit": "mm",
+                "period": "2023-12-01/2024-05-28",
+                "value": 394.67,
+                "reason": "total rainfall during crop period; effective share unknown"
+              },
+              {
+                "source": "FAO-56 water balance bounds",
+                "file": null,
+                "sha256": null,
+                "variable": "irrigation_requirement [lower, upper]",
+                "unit": "mm",
+                "period": null,
+                "location": null,
+                "value": [
+                  null,
+                  null
+                ],
+                "reason": "lower = ETc_low − rainfall − initial soil water (net); upper = ETc_high / efficiency (gross); no leaching requirement"
+              }
+            ],
+            "needs": [
+              "declared water availability for season 2 (mm)",
+              "declared irrigation efficiency (0–1] to bound gross requirement",
+              "declared initial plant-available soil water for season 2 (mm) to bound net requirement"
+            ]
+          }
+        }
+      ]
+    },
+    "transitions": {
+      "Glycine max -> Zea mays": {
+        "state": "unknown",
+        "evidence": [],
+        "needs": [
+          "documented transition rule Glycine max -> Zea mays (no local rotation-rule dataset)"
+        ]
+      },
+      "Glycine max -> Glycine max": {
+        "state": "unknown",
+        "evidence": [],
+        "needs": [
+          "documented transition rule Glycine max -> Glycine max (no local rotation-rule dataset)"
+        ]
+      },
+      "Glycine max -> Triticum aestivum": {
+        "state": "unknown",
+        "evidence": [],
+        "needs": [
+          "documented transition rule Glycine max -> Triticum aestivum (no local rotation-rule dataset)"
+        ]
+      },
+      "Triticum aestivum -> Zea mays": {
+        "state": "unknown",
+        "evidence": [],
+        "needs": [
+          "documented transition rule Triticum aestivum -> Zea mays (no local rotation-rule dataset)"
+        ]
+      },
+      "Triticum aestivum -> Glycine max": {
+        "state": "unknown",
+        "evidence": [],
+        "needs": [
+          "documented transition rule Triticum aestivum -> Glycine max (no local rotation-rule dataset)"
+        ]
+      },
+      "Triticum aestivum -> Triticum aestivum": {
+        "state": "unknown",
+        "evidence": [],
+        "needs": [
+          "documented transition rule Triticum aestivum -> Triticum aestivum (no local rotation-rule dataset)"
+        ]
+      },
+      "Zea mays -> Zea mays": {
+        "state": "unknown",
+        "evidence": [],
+        "needs": [
+          "documented transition rule Zea mays -> Zea mays (no local rotation-rule dataset)"
+        ]
+      },
+      "Zea mays -> Glycine max": {
+        "state": "unknown",
+        "evidence": [],
+        "needs": [
+          "documented transition rule Zea mays -> Glycine max (no local rotation-rule dataset)"
+        ]
+      },
+      "Zea mays -> Triticum aestivum": {
+        "state": "unknown",
+        "evidence": [],
+        "needs": [
+          "documented transition rule Zea mays -> Triticum aestivum (no local rotation-rule dataset)"
+        ]
+      }
+    },
+    "history": {
+      "state": "unknown",
+      "evidence": [],
+      "needs": [
+        "reviewed crop history with provenance",
+        "current/preceding crop"
+      ]
+    }
+  },
+  "missing": [
+    "Glycine max / season 1 / calendar: verified crop calendar for US (FAO dataset has none)",
+    "Glycine max / season 1 / cycle: declared cultivar cycle (days): season length is between EcoCrop gmin and gmax",
+    "Glycine max / season 1 / soil_nutrients: soil nutrient assessment (lab/agronomist) declared with provenance",
+    "Glycine max / season 1 / soil_nutrients: soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+    "Glycine max / season 1 / water: declared water availability for season 1 (mm)",
+    "Glycine max / season 1 / water: irrigation requirement: declared (mm, with provenance) or FAO-56 selection (Table 11 row, Table 12 label) to compute it",
+    "Glycine max / season 2 / calendar: verified crop calendar for US (FAO dataset has none)",
+    "Glycine max / season 2 / soil_nutrients: soil nutrient assessment (lab/agronomist) declared with provenance",
+    "Glycine max / season 2 / soil_nutrients: soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+    "Glycine max / season 2 / water: declared water availability for season 2 (mm)",
+    "Glycine max / season 2 / water: irrigation requirement: declared (mm, with provenance) or FAO-56 selection (Table 11 row, Table 12 label) to compute it",
+    "Triticum aestivum / season 1 / calendar: verified crop calendar for US (FAO dataset has none)",
+    "Triticum aestivum / season 1 / cycle: declared cultivar cycle (days): season length is between EcoCrop gmin and gmax",
+    "Triticum aestivum / season 1 / soil_nutrients: soil nutrient assessment (lab/agronomist) declared with provenance",
+    "Triticum aestivum / season 1 / soil_nutrients: soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+    "Triticum aestivum / season 1 / water: Table 11 row whose plant date (December) includes planting month 4",
+    "Triticum aestivum / season 1 / water: declared water availability for season 1 (mm)",
+    "Triticum aestivum / season 2 / calendar: verified crop calendar for US (FAO dataset has none)",
+    "Triticum aestivum / season 2 / soil_nutrients: soil nutrient assessment (lab/agronomist) declared with provenance",
+    "Triticum aestivum / season 2 / soil_nutrients: soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+    "Triticum aestivum / season 2 / water: declared initial plant-available soil water for season 2 (mm) to bound net requirement",
+    "Triticum aestivum / season 2 / water: declared irrigation efficiency (0–1] to bound gross requirement",
+    "Triticum aestivum / season 2 / water: declared water availability for season 2 (mm)",
+    "Zea mays / season 1 / calendar: verified crop calendar for US (FAO dataset has none)",
+    "Zea mays / season 1 / soil_nutrients: soil nutrient assessment (lab/agronomist) declared with provenance",
+    "Zea mays / season 1 / soil_nutrients: soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+    "Zea mays / season 1 / water: declared initial plant-available soil water for season 1 (mm) to bound net requirement",
+    "Zea mays / season 1 / water: declared irrigation efficiency (0–1] to bound gross requirement",
+    "Zea mays / season 1 / water: declared water availability for season 1 (mm)",
+    "Zea mays / season 2 / calendar: verified crop calendar for US (FAO dataset has none)",
+    "Zea mays / season 2 / cycle: declared cultivar cycle (days): season length is between EcoCrop gmin and gmax",
+    "Zea mays / season 2 / soil_nutrients: soil nutrient assessment (lab/agronomist) declared with provenance",
+    "Zea mays / season 2 / soil_nutrients: soil pH declared/measured for the parcel and valid EcoCrop pH bounds",
+    "Zea mays / season 2 / water: Table 11 row whose plant date (April) includes planting month 12",
+    "Zea mays / season 2 / water: declared water availability for season 2 (mm)",
+    "current/preceding crop",
+    "documented transition rule Glycine max -> Glycine max (no local rotation-rule dataset)",
+    "documented transition rule Glycine max -> Triticum aestivum (no local rotation-rule dataset)",
+    "documented transition rule Glycine max -> Zea mays (no local rotation-rule dataset)",
+    "documented transition rule Triticum aestivum -> Glycine max (no local rotation-rule dataset)",
+    "documented transition rule Triticum aestivum -> Triticum aestivum (no local rotation-rule dataset)",
+    "documented transition rule Triticum aestivum -> Zea mays (no local rotation-rule dataset)",
+    "documented transition rule Zea mays -> Glycine max (no local rotation-rule dataset)",
+    "documented transition rule Zea mays -> Triticum aestivum (no local rotation-rule dataset)",
+    "documented transition rule Zea mays -> Zea mays (no local rotation-rule dataset)",
+    "reviewed crop history with provenance"
+  ],
+  "optimizer": null,
+  "name_mapping": {
+    "Zea mays": {
+      "fao_crop_id": "0338",
+      "fao_name": "Corn",
+      "match": "exact scientific name string"
+    },
+    "Glycine max": {
+      "fao_crop_id": "0326",
+      "fao_name": "Soya",
+      "match": "exact scientific name string"
+    },
+    "Triticum aestivum": null
+  }
+}

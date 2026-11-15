@@ -1,0 +1,129 @@
+{
+ "note": "Monocultivo típico por piloto para el backtesting. Declarado por decisión humana (2026-11-14) con la regla: el cultivo de la biblioteca con mayor superficie cosechada media en el país durante el período de calibración. Es un dato NACIONAL: no prueba que ese cultivo domine en el punto piloto (en el Valle Central de California es dudoso).",
+ "source": {
+  "dataset": "FAOSTAT Production_Crops_Livestock",
+  "file": "data/raw/faostat/crops_livestock_global.zip",
+  "member": "Production_Crops_Livestock_E_All_Data_(Normalized).csv",
+  "sha256": "c5835418c18f9322e7decbd6800f93a216eaae3cdfa31acb08f0518c0c6d6853",
+  "element": "Area harvested (5312)",
+  "unit": "ha",
+  "period": [
+   1981,
+   2015
+  ],
+  "item_mapping": "nombres FAOSTAT -> crop_key declarados aquí; Lupins, Clover y Alfalfa no se mapean (sin equivalencia exacta o sin datos)"
+ },
+ "item_mapping": {
+  "Maize (corn)": "maize",
+  "Wheat": "wheat",
+  "Soya beans": "soybean",
+  "Broad beans and horse beans, dry": "bean_faba",
+  "Potatoes": "potato",
+  "Sorghum": "sorghum",
+  "Barley": "barley",
+  "Sunflower seed": "sunflower",
+  "Lentils, dry": "lentil",
+  "Cassava, fresh": "cassava",
+  "Oats": "oat",
+  "Rice": "rice",
+  "Beans, dry": "bean_common"
+ },
+ "pilots": {
+  "piura_1": {
+   "monoculture": "maize",
+   "status": "declared_from_source",
+   "reason": "mayor superficie cosechada media 1981-2015 en Peru entre los cultivos de la biblioteca (FAOSTAT, nacional, no por punto)",
+   "evidence": {
+    "country": "Peru",
+    "faostat_item": "Maize (corn)",
+    "mean_area_ha": 436511,
+    "years": 35,
+    "runner_up": {
+     "crop": "rice",
+     "faostat_item": "Rice",
+     "mean_area_ha": 274018
+    }
+   }
+  },
+  "piura_2": {
+   "monoculture": "maize",
+   "status": "declared_from_source",
+   "reason": "mayor superficie cosechada media 1981-2015 en Peru entre los cultivos de la biblioteca (FAOSTAT, nacional, no por punto)",
+   "evidence": {
+    "country": "Peru",
+    "faostat_item": "Maize (corn)",
+    "mean_area_ha": 436511,
+    "years": 35,
+    "runner_up": {
+     "crop": "rice",
+     "faostat_item": "Rice",
+     "mean_area_ha": 274018
+    }
+   }
+  },
+  "piura_3": {
+   "monoculture": "maize",
+   "status": "declared_from_source",
+   "reason": "mayor superficie cosechada media 1981-2015 en Peru entre los cultivos de la biblioteca (FAOSTAT, nacional, no por punto)",
+   "evidence": {
+    "country": "Peru",
+    "faostat_item": "Maize (corn)",
+    "mean_area_ha": 436511,
+    "years": 35,
+    "runner_up": {
+     "crop": "rice",
+     "faostat_item": "Rice",
+     "mean_area_ha": 274018
+    }
+   }
+  },
+  "iowa": {
+   "monoculture": "maize",
+   "status": "declared_from_source",
+   "reason": "mayor superficie cosechada media 1981-2015 en United States of America entre los cultivos de la biblioteca (FAOSTAT, nacional, no por punto)",
+   "evidence": {
+    "country": "United States of America",
+    "faostat_item": "Maize (corn)",
+    "mean_area_ha": 29410943,
+    "years": 35,
+    "runner_up": {
+     "crop": "soybean",
+     "faostat_item": "Soya beans",
+     "mean_area_ha": 27500292
+    }
+   }
+  },
+  "kenia": {
+   "monoculture": "maize",
+   "status": "declared_from_source",
+   "reason": "mayor superficie cosechada media 1981-2015 en Kenya entre los cultivos de la biblioteca (FAOSTAT, nacional, no por punto)",
+   "evidence": {
+    "country": "Kenya",
+    "faostat_item": "Maize (corn)",
+    "mean_area_ha": 1582661,
+    "years": 35,
+    "runner_up": {
+     "crop": "sorghum",
+     "faostat_item": "Sorghum",
+     "mean_area_ha": 146258
+    }
+   }
+  },
+  "california": {
+   "monoculture": "maize",
+   "status": "declared_from_source",
+   "reason": "mayor superficie cosechada media 1981-2015 en United States of America entre los cultivos de la biblioteca (FAOSTAT, nacional, no por punto)",
+   "evidence": {
+    "country": "United States of America",
+    "faostat_item": "Maize (corn)",
+    "mean_area_ha": 29410943,
+    "years": 35,
+    "runner_up": {
+     "crop": "soybean",
+     "faostat_item": "Soya beans",
+     "mean_area_ha": 27500292
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,22 @@
+{
+ "note": "Correspondencia nombre común -> nombre científico exacto de EcoCrop. Es una SELECCIÓN DECLARADA, no una equivalencia verificada: confirmar con agrónomo antes de usar en recomendaciones. Cada entrada debe coincidir exactamente con scientificname en ecocrop_validated.parquet.",
+ "status": "declared_pending_agronomist_review",
+ "species": {
+  "maize": "Zea mays",
+  "wheat": "Triticum aestivum",
+  "soybean": "Glycine max",
+  "bean_faba": "Vicia faba",
+  "potato": "Solanum tuberosum",
+  "sorghum": "Sorghum bicolor",
+  "barley": "Hordeum vulgare",
+  "sunflower": "Helianthus annuus",
+  "lentil": "Lens culinaris",
+  "tarwi": "Lupinus mutabilis",
+  "cassava": "Manihot esculenta",
+  "oat": "Avena sativa",
+  "clover_red": "Trifolium pratense",
+  "rice": "Oryza sativa",
+  "alfalfa": "Medicago sativa",
+  "bean_common": "Phaseolus vulgaris"
+ }
+}

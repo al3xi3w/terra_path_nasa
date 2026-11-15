@@ -1,0 +1,7 @@
+power: {url: 'https://power.larc.nasa.gov/docs/services/api/temporal/daily/', product: POWER daily AG, resolution: 'meteorology ~0.5 x 0.625 degrees; solar ~1 degree', kind: estimated/modelled}
+gpm: {url: 'https://gpm.nasa.gov/data/imerg', product: GPM_3IMERGHH, version: '07', resolution: '0.1 degree / 30 minutes', units: mm/h, kind: satellite-gauge estimate}
+smap: {url: 'https://nsidc.org/data/spl3smp/versions/9', product: SPL3SMP, version: '009', resolution: '36 km / daily', units: m3/m3, kind: satellite retrieval}
+modis: {url: 'https://www.earthdata.nasa.gov/data/catalog/lpcloud-mod13q1-061', product: MOD13Q1, version: '061', resolution: '250 m / 16 days', units: dimensionless after scale, kind: satellite composite}
+srtm: {url: 'https://www.earthdata.nasa.gov/data/catalog/lpcloud-srtmgl1-003', product: SRTMGL1, version: '003', resolution: '1 arcsecond / February 2000', units: m, coverage: '60 N to 56 S', kind: radar derived elevation}
+gaez: {url: 'https://www.fao.org/gaez/en', product: RES01-LT5, version: '5', resolution: '~10 km / 20-year mean', units: days, kind: modelled agroclimate}
+agronomy: {url: 'https://api-cropcalendar.apps.fao.org/', product: Crop Calendar, version: live, coverage: 'all entries published by FAO; not every country', kind: compiled agronomic reference}

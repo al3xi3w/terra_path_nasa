@@ -1,0 +1,27 @@
+# ------------------------------------------------------------------
+# Datos: no se suben al repositorio (≈1,3 GB, varias licencias de terceros).
+# Cómo obtenerlos y regenerarlos: ver DATA.md
+# ------------------------------------------------------------------
+/data/
+/app/data/
+
+# Entorno de Python y cachés
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Credenciales: nunca en el repositorio (Earthdata se lee de variables de entorno)
+.env
+.env.*
+.netrc
+*.pem
+*.key
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.idea/
+*.swp

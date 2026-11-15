@@ -1,0 +1,491 @@
+{
+ "pdf_sha256": "bba2b84e839336453556ebe8422dc862f10831deda1a8ab46bfd3a9092d8665a",
+ "source": "FAO Irrigation and Drainage Paper 56 (Allen et al., 1998)",
+ "conditions": "Table 11: typical stage lengths for planting period and region; Table 12: Kc for sub-humid climate RHmin≈45%, u2≈2 m/s, non-stressed, well-managed crops",
+ "verification": "Values read from rendered PDF pages 131, 132 and 137 at 110 dpi in the 2026-11-14 session; text layer not used because footnote markers merge into numbers (e.g. \"202\" = 20 with footnote 2). Spot-check recommended. Potato (PDF 136), Sunflower (PDF 137) and Alfalfa Hay - averaged cutting effects (PDF 138) added 2026-11-14 from pages rendered with pypdfium2. Beans, dry and Pulses (PDF 137) added 2026-11-15.",
+ "policy": "Ranges stored as [low, high]; blank cells null; no group propagation; group rows (Barley/Oats/Wheat) not assigned to a single crop; region text kept verbatim, no geographic matching.",
+ "table11": [
+  {
+   "id": "T11-soy-1",
+   "crop_label": "Soybeans",
+   "L_ini": 15,
+   "L_dev": 15,
+   "L_mid": 40,
+   "L_late": 15,
+   "total": 85,
+   "plant_date": "Dec",
+   "region": "Tropics",
+   "pdf_page": 131,
+   "printed_page": 105,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-soy-2",
+   "crop_label": "Soybeans",
+   "L_ini": 20,
+   "L_dev": null,
+   "L_mid": 60,
+   "L_late": 25,
+   "total": 140,
+   "plant_date": "May",
+   "region": "Central USA",
+   "pdf_page": 131,
+   "printed_page": 105,
+   "notes": "L_dev printed \"30/35\": two values; not resolved, row unusable for numeric stage lengths",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-soy-3",
+   "crop_label": "Soybeans",
+   "L_ini": 20,
+   "L_dev": 25,
+   "L_mid": 75,
+   "L_late": 30,
+   "total": 150,
+   "plant_date": "June",
+   "region": "Japan",
+   "pdf_page": 131,
+   "printed_page": 105,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-cer-1",
+   "crop_label": "Barley/Oats/Wheat",
+   "L_ini": 15,
+   "L_dev": 25,
+   "L_mid": 50,
+   "L_late": 30,
+   "total": 120,
+   "plant_date": "November",
+   "region": "Central India",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "Group row: barley, oats and wheat share it; crop not distinguished",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-cer-2",
+   "crop_label": "Barley/Oats/Wheat",
+   "L_ini": 20,
+   "L_dev": 25,
+   "L_mid": 60,
+   "L_late": 30,
+   "total": 135,
+   "plant_date": "March/Apr",
+   "region": "35-45 °L",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "Group row",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-cer-3",
+   "crop_label": "Barley/Oats/Wheat",
+   "L_ini": 15,
+   "L_dev": 30,
+   "L_mid": 65,
+   "L_late": 40,
+   "total": 150,
+   "plant_date": "July",
+   "region": "East Africa",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "Group row",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-cer-4",
+   "crop_label": "Barley/Oats/Wheat",
+   "L_ini": 40,
+   "L_dev": 30,
+   "L_mid": 40,
+   "L_late": 20,
+   "total": 130,
+   "plant_date": "Apr",
+   "region": "",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "Group row; region blank",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-cer-5",
+   "crop_label": "Barley/Oats/Wheat",
+   "L_ini": 40,
+   "L_dev": 60,
+   "L_mid": 60,
+   "L_late": 40,
+   "total": 200,
+   "plant_date": "Nov",
+   "region": "",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "Group row; region blank",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-cer-6",
+   "crop_label": "Barley/Oats/Wheat",
+   "L_ini": 20,
+   "L_dev": 50,
+   "L_mid": 60,
+   "L_late": 30,
+   "total": 160,
+   "plant_date": "Dec",
+   "region": "Calif. Desert, USA",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "Group row",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-ww-1",
+   "crop_label": "Winter Wheat",
+   "L_ini": 20,
+   "L_dev": 60,
+   "L_mid": 70,
+   "L_late": 30,
+   "total": 180,
+   "plant_date": "December",
+   "region": "Calif., USA",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "Footnote 2 on L_ini and L_dev: periods lengthen in frozen climates (dormancy)",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-ww-2",
+   "crop_label": "Winter Wheat",
+   "L_ini": 30,
+   "L_dev": 140,
+   "L_mid": 40,
+   "L_late": 30,
+   "total": 240,
+   "plant_date": "November",
+   "region": "Mediterranean",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-ww-3",
+   "crop_label": "Winter Wheat",
+   "L_ini": 160,
+   "L_dev": 75,
+   "L_mid": 75,
+   "L_late": 25,
+   "total": 335,
+   "plant_date": "October",
+   "region": "Idaho, USA",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-mz-1",
+   "crop_label": "Maize (grain)",
+   "L_ini": 30,
+   "L_dev": 50,
+   "L_mid": 60,
+   "L_late": 40,
+   "total": 180,
+   "plant_date": "April",
+   "region": "East Africa (alt.)",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-mz-2",
+   "crop_label": "Maize (grain)",
+   "L_ini": 25,
+   "L_dev": 40,
+   "L_mid": 45,
+   "L_late": 30,
+   "total": 140,
+   "plant_date": "Dec/Jan",
+   "region": "Arid Climate",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-mz-3",
+   "crop_label": "Maize (grain)",
+   "L_ini": 20,
+   "L_dev": 35,
+   "L_mid": 40,
+   "L_late": 30,
+   "total": 125,
+   "plant_date": "June",
+   "region": "Nigeria (humid)",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-mz-4",
+   "crop_label": "Maize (grain)",
+   "L_ini": 20,
+   "L_dev": 35,
+   "L_mid": 40,
+   "L_late": 30,
+   "total": 125,
+   "plant_date": "October",
+   "region": "India (dry, cool)",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-mz-5",
+   "crop_label": "Maize (grain)",
+   "L_ini": 30,
+   "L_dev": 40,
+   "L_mid": 50,
+   "L_late": 30,
+   "total": 150,
+   "plant_date": "April",
+   "region": "Spain (spr, sum.); Calif.",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  },
+  {
+   "id": "T11-mz-6",
+   "crop_label": "Maize (grain)",
+   "L_ini": 30,
+   "L_dev": 40,
+   "L_mid": 50,
+   "L_late": 50,
+   "total": 170,
+   "plant_date": "April",
+   "region": "Idaho, USA",
+   "pdf_page": 132,
+   "printed_page": 106,
+   "notes": "",
+   "table": "11",
+   "units": "day",
+   "status": "visually_verified"
+  }
+ ],
+ "table12": [
+  {
+   "crop_label": "Soybeans",
+   "kc_initial": null,
+   "kc_mid": 1.15,
+   "kc_end": [
+    0.5,
+    0.5
+   ],
+   "max_height_m": [
+    0.5,
+    1.0
+   ],
+   "pdf_page": 137,
+   "printed_page": 111,
+   "notes": "Kc ini blank: group value (legumes 0.4) not propagated",
+   "table": "12",
+   "units": "dimensionless",
+   "status": "visually_verified"
+  },
+  {
+   "crop_label": "Spring Wheat",
+   "kc_initial": null,
+   "kc_mid": 1.15,
+   "kc_end": [
+    0.25,
+    0.4
+   ],
+   "max_height_m": [
+    1,
+    1
+   ],
+   "pdf_page": 137,
+   "printed_page": 111,
+   "notes": "Kc ini blank; footnote 10: higher Kc end for hand-harvested crops",
+   "table": "12",
+   "units": "dimensionless",
+   "status": "visually_verified"
+  },
+  {
+   "crop_label": "Winter Wheat - with frozen soils",
+   "kc_initial": 0.4,
+   "kc_mid": 1.15,
+   "kc_end": [
+    0.25,
+    0.4
+   ],
+   "max_height_m": [
+    1,
+    1
+   ],
+   "pdf_page": 137,
+   "printed_page": 111,
+   "notes": "Footnote 10",
+   "table": "12",
+   "units": "dimensionless",
+   "status": "visually_verified"
+  },
+  {
+   "crop_label": "Winter Wheat - with non-frozen soils",
+   "kc_initial": 0.7,
+   "kc_mid": 1.15,
+   "kc_end": [
+    0.25,
+    0.4
+   ],
+   "max_height_m": [
+    1,
+    1
+   ],
+   "pdf_page": 137,
+   "printed_page": 111,
+   "notes": "Footnote 10",
+   "table": "12",
+   "units": "dimensionless",
+   "status": "visually_verified"
+  },
+  {
+   "crop_label": "Maize, Field (grain)",
+   "kc_initial": null,
+   "kc_mid": 1.2,
+   "kc_end": [
+    0.35,
+    0.6
+   ],
+   "max_height_m": [
+    2,
+    2
+   ],
+   "pdf_page": 137,
+   "printed_page": 111,
+   "notes": "Kc ini blank (group 0.3 not propagated); footnote 11: 0.60 harvest at high grain moisture, 0.35 after complete field drying (~18% moisture)",
+   "table": "12",
+   "units": "dimensionless",
+   "status": "visually_verified"
+  },
+  {
+   "crop_label": "Potato",
+   "kc_initial": null,
+   "kc_mid": 1.15,
+   "kc_end": [
+    0.75,
+    0.75
+   ],
+   "max_height_m": [
+    0.6,
+    0.6
+   ],
+   "pdf_page": 136,
+   "printed_page": 110,
+   "notes": "Kc ini blank (group roots and tubers 0.5 not propagated); footnote 4: Kc end about 0.40 for long season potatoes with vine kill. Leído de la página PDF renderizada (pypdfium2, escala 2.2) en la sesión 2026-11-14; capa de texto no usada.",
+   "table": "12",
+   "units": "dimensionless",
+   "status": "visually_verified"
+  },
+  {
+   "crop_label": "Sunflower",
+   "kc_initial": null,
+   "kc_mid": [
+    1.0,
+    1.15
+   ],
+   "kc_end": [
+    0.35,
+    0.35
+   ],
+   "max_height_m": [
+    2.0,
+    2.0
+   ],
+   "pdf_page": 137,
+   "printed_page": 111,
+   "notes": "Kc ini blank (group oil crops 0.35 not propagated); Kc mid is a range; footnote 9: the lower values are for rainfed crops having less dense plant populations. Leído de la página PDF renderizada (pypdfium2, escala 2.2) en la sesión 2026-11-14; capa de texto no usada.",
+   "table": "12",
+   "units": "dimensionless",
+   "status": "visually_verified"
+  },
+  {
+   "crop_label": "Alfalfa Hay - averaged cutting effects",
+   "kc_initial": 0.4,
+   "kc_mid": 0.95,
+   "kc_end": [
+    0.9,
+    0.9
+   ],
+   "max_height_m": [
+    0.7,
+    0.7
+   ],
+   "pdf_page": 138,
+   "printed_page": 112,
+   "notes": "Footnote 13: overall average Kc mid for hay crops, averaging before and after cuttings, applied from the end of the first development period to the start of the last late-season period. Leído de la página PDF renderizada (pypdfium2, escala 2.2) en la sesión 2026-11-14; capa de texto no usada.",
+   "table": "12",
+   "units": "dimensionless",
+   "status": "visually_verified"
+  },
+  {
+   "crop_label": "Beans, dry and Pulses",
+   "kc_initial": 0.4,
+   "kc_mid": 1.15,
+   "kc_end": [
+    0.35,
+    0.35
+   ],
+   "max_height_m": [
+    0.4,
+    0.4
+   ],
+   "pdf_page": 137,
+   "printed_page": 111,
+   "table": "12",
+   "units": "dimensionless",
+   "status": "visually_verified",
+   "notes": "Footnote 2: beans grown on stalks reaching 1.5-2 m need higher Kc (1.20 for dry beans). Leído de la página PDF renderizada (pypdfium2, escala 2.2) en la sesión 2026-11-15; capa de texto no usada."
+  }
+ ]
+}

@@ -1,0 +1,311 @@
+{
+  "parcel": {
+    "latitude": 36.59,
+    "longitude": -119.52,
+    "current_crop": "Zea mays",
+    "previous_crops": [],
+    "sowing_date": "2023-01-01",
+    "horizon_end": "2023-12-31",
+    "candidates": [
+      {
+        "crop": "Zea mays"
+      },
+      {
+        "crop": "Glycine max"
+      },
+      {
+        "crop": "Triticum aestivum"
+      }
+    ]
+  },
+  "seasons": [
+    {
+      "start": "2023-01-01",
+      "end": "2023-05-31",
+      "irrigation_budget": {
+        "value": 100,
+        "unit": "mm",
+        "status": "hypothetical",
+        "provenance": "Synthetic software fixture; not an agricultural estimate"
+      }
+    },
+    {
+      "start": "2023-07-01",
+      "end": "2023-11-30",
+      "irrigation_budget": {
+        "value": 100,
+        "unit": "mm",
+        "status": "hypothetical",
+        "provenance": "Synthetic software fixture; not an agricultural estimate"
+      }
+    }
+  ],
+  "crops": {
+    "Zea mays": {
+      "cycle": {
+        "value": 100,
+        "unit": "day",
+        "status": "hypothetical",
+        "provenance": "Synthetic software fixture; not an agricultural estimate"
+      },
+      "seasons": [
+        {
+          "calendar": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "climate": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "soil_nutrients": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "irrigation_required": {
+            "value": 90,
+            "unit": "mm",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          },
+          "cost": {
+            "value": 30,
+            "unit": "USD/ha",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          }
+        },
+        {
+          "calendar": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "climate": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "soil_nutrients": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "irrigation_required": {
+            "value": 90,
+            "unit": "mm",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          },
+          "cost": {
+            "value": 30,
+            "unit": "USD/ha",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          }
+        }
+      ]
+    },
+    "Glycine max": {
+      "cycle": {
+        "value": 100,
+        "unit": "day",
+        "status": "hypothetical",
+        "provenance": "Synthetic software fixture; not an agricultural estimate"
+      },
+      "seasons": [
+        {
+          "calendar": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "climate": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "soil_nutrients": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "irrigation_required": {
+            "value": 40,
+            "unit": "mm",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          },
+          "cost": {
+            "value": 10,
+            "unit": "USD/ha",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          }
+        },
+        {
+          "calendar": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "climate": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "soil_nutrients": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "irrigation_required": {
+            "value": 40,
+            "unit": "mm",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          },
+          "cost": {
+            "value": 10,
+            "unit": "USD/ha",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          }
+        }
+      ]
+    },
+    "Triticum aestivum": {
+      "cycle": {
+        "value": 100,
+        "unit": "day",
+        "status": "hypothetical",
+        "provenance": "Synthetic software fixture; not an agricultural estimate"
+      },
+      "seasons": [
+        {
+          "calendar": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "climate": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "soil_nutrients": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "irrigation_required": {
+            "value": 60,
+            "unit": "mm",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          },
+          "cost": {
+            "value": 20,
+            "unit": "USD/ha",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          }
+        },
+        {
+          "calendar": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "climate": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "soil_nutrients": {
+            "allowed": true,
+            "status": "hypothetical",
+            "provenance": "Synthetic constraint for testing only"
+          },
+          "irrigation_required": {
+            "value": 60,
+            "unit": "mm",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          },
+          "cost": {
+            "value": 20,
+            "unit": "USD/ha",
+            "status": "hypothetical",
+            "provenance": "Synthetic software fixture; not an agricultural estimate"
+          }
+        }
+      ]
+    }
+  },
+  "transitions": {
+    "Zea mays": {
+      "Zea mays": {
+        "allowed": false,
+        "status": "hypothetical",
+        "provenance": "Synthetic constraint for testing only"
+      },
+      "Glycine max": {
+        "allowed": true,
+        "status": "hypothetical",
+        "provenance": "Synthetic constraint for testing only"
+      },
+      "Triticum aestivum": {
+        "allowed": true,
+        "status": "hypothetical",
+        "provenance": "Synthetic constraint for testing only"
+      }
+    },
+    "Glycine max": {
+      "Zea mays": {
+        "allowed": true,
+        "status": "hypothetical",
+        "provenance": "Synthetic constraint for testing only"
+      },
+      "Glycine max": {
+        "allowed": false,
+        "status": "hypothetical",
+        "provenance": "Synthetic constraint for testing only"
+      },
+      "Triticum aestivum": {
+        "allowed": true,
+        "status": "hypothetical",
+        "provenance": "Synthetic constraint for testing only"
+      }
+    },
+    "Triticum aestivum": {
+      "Zea mays": {
+        "allowed": true,
+        "status": "hypothetical",
+        "provenance": "Synthetic constraint for testing only"
+      },
+      "Glycine max": {
+        "allowed": true,
+        "status": "hypothetical",
+        "provenance": "Synthetic constraint for testing only"
+      },
+      "Triticum aestivum": {
+        "allowed": false,
+        "status": "hypothetical",
+        "provenance": "Synthetic constraint for testing only"
+      }
+    }
+  },
+  "history_review": {
+    "allowed": true,
+    "status": "hypothetical",
+    "provenance": "Synthetic constraint for testing only"
+  },
+  "objectives": [
+    "min_cost",
+    "min_irrigation"
+  ]
+}

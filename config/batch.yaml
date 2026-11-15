@@ -1,0 +1,20 @@
+# No mandatory pilot: fill coordinates supplied by a farmer when needed.
+new_data_max_bytes: 5000000000
+power_points: []
+power_start_year: 1981
+power_end_year: 2025
+power_time_standard: LST
+satellite_points: []
+satellite_start: '2021-01-01'
+satellite_end: '2025-12-31'
+appeears_layers:
+  - {product: MOD13Q1.061, layer: _250m_16_days_NDVI}
+  - {product: MOD13Q1.061, layer: _250m_16_days_EVI}
+  - {product: MOD13Q1.061, layer: _250m_16_days_VI_Quality}
+  - {product: SPL3SMP.009, layer: Soil_Moisture_Retrieval_Data_AM_soil_moisture}
+  - {product: SPL3SMP.009, layer: Soil_Moisture_Retrieval_Data_AM_retrieval_qual_flag}
+  - {product: SPL3SMP.009, layer: Soil_Moisture_Retrieval_Data_PM_soil_moisture_pm}
+  - {product: SPL3SMP.009, layer: Soil_Moisture_Retrieval_Data_PM_retrieval_qual_flag_pm}
+monthly_global:
+  - {source: gpm_monthly, product: GPM_3IMERGM, version: '07'}
+  - {source: modis_monthly, product: MOD13C2, version: '061'}

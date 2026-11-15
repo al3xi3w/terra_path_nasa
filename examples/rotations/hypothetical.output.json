@@ -1,0 +1,341 @@
+{
+  "status": "feasible",
+  "evaluation": "experimental_not_agronomically_validated",
+  "feasible": [
+    {
+      "sequence": [
+        "Glycine max",
+        "Triticum aestivum"
+      ],
+      "metrics": {
+        "min_irrigation": 100.0,
+        "min_cost": 30.0
+      }
+    },
+    {
+      "sequence": [
+        "Triticum aestivum",
+        "Glycine max"
+      ],
+      "metrics": {
+        "min_irrigation": 100.0,
+        "min_cost": 30.0
+      }
+    },
+    {
+      "sequence": [
+        "Glycine max",
+        "Zea mays"
+      ],
+      "metrics": {
+        "min_irrigation": 130.0,
+        "min_cost": 40.0
+      }
+    },
+    {
+      "sequence": [
+        "Triticum aestivum",
+        "Zea mays"
+      ],
+      "metrics": {
+        "min_irrigation": 150.0,
+        "min_cost": 50.0
+      }
+    }
+  ],
+  "discarded": [
+    {
+      "sequence": [
+        "Glycine max",
+        "Glycine max"
+      ],
+      "reasons": [
+        "2: transition Glycine max -> Glycine max forbidden"
+      ]
+    },
+    {
+      "sequence": [
+        "Triticum aestivum",
+        "Triticum aestivum"
+      ],
+      "reasons": [
+        "2: transition Triticum aestivum -> Triticum aestivum forbidden"
+      ]
+    },
+    {
+      "sequence": [
+        "Zea mays",
+        "Glycine max"
+      ],
+      "reasons": [
+        "1: transition Zea mays -> Zea mays forbidden"
+      ]
+    },
+    {
+      "sequence": [
+        "Zea mays",
+        "Triticum aestivum"
+      ],
+      "reasons": [
+        "1: transition Zea mays -> Zea mays forbidden"
+      ]
+    },
+    {
+      "sequence": [
+        "Zea mays",
+        "Zea mays"
+      ],
+      "reasons": [
+        "1: transition Zea mays -> Zea mays forbidden",
+        "2: transition Zea mays -> Zea mays forbidden"
+      ]
+    }
+  ],
+  "missing": [],
+  "criteria": [
+    "min_cost",
+    "min_irrigation"
+  ],
+  "best": {
+    "sequence": [
+      "Glycine max",
+      "Triticum aestivum"
+    ],
+    "metrics": {
+      "min_irrigation": 100.0,
+      "min_cost": 30.0
+    }
+  },
+  "mandatory": [
+    "cycle fits season",
+    "calendar",
+    "climate",
+    "soil_nutrients",
+    "irrigation budget",
+    "explicit pair transitions",
+    "history review"
+  ],
+  "tie_break": "lexicographic crop names after ordered objectives; no agronomic superiority implied",
+  "assumptions": "Seasonal gates and water demand supplied externally; no inferred families, yields, nutrient effects or GAEZ interpretation",
+  "parcel_evidence": {
+    "input": {
+      "latitude": 36.59,
+      "longitude": -119.52,
+      "current_crop": "Zea mays",
+      "previous_crops": [],
+      "sowing_date": "2023-01-01",
+      "horizon_end": "2023-12-31",
+      "candidates": [
+        {
+          "crop": "Zea mays"
+        },
+        {
+          "crop": "Glycine max"
+        },
+        {
+          "crop": "Triticum aestivum"
+        }
+      ]
+    },
+    "provenance": {
+      "farmer": "All supplied parcel fields except assumptions; declarations not independently verified",
+      "NASA_FAO": "Per-factor source and GAEZ lineage",
+      "assumptions": {},
+      "unknown": "Null/absent fields and required lists; never replaced with zero"
+    },
+    "scenarios": [
+      {
+        "crop": "Zea mays",
+        "status": "insufficiently_documented",
+        "climate": {
+          "rainfall_mm": null,
+          "reason": "Harvest date unknown"
+        },
+        "calendar": {
+          "status": "unverified_plan",
+          "source": "farmer",
+          "reason": "Valid proposed dates do not verify local agronomic calendar"
+        },
+        "factors": [],
+        "gaez": {
+          "source": "FAO GAEZ V5",
+          "climate_lineage": "AgERA5",
+          "period": "2001–2020",
+          "use": "context only; not additive evidence or parcel prediction",
+          "layers": [
+            {
+              "path": "data/raw/gaez/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.MZE.HRLM.tif",
+              "sha256": "8670aa038c18d5b9210afbc0d76fb27e6c417869ba07079f3e0e96b4299e561d",
+              "value": 8.0,
+              "units": "SIX stored code 1–9; legend unverified; zero is NoData",
+              "interpretation": "Local uint8 rasters contradict previous 0–10000 index description; do not rank or convert to percentage",
+              "resolution_degrees": [
+                0.08333333333333333,
+                0.08333333333333333
+              ],
+              "management": "rainfed high inputs",
+              "applicability": "Management scenario not confirmed for parcel; no automatic score"
+            },
+            {
+              "path": "data/raw/gaez/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.MZE.HILM.tif",
+              "sha256": "6cf36cff0ea9d4d48c5c132d0753a70a8ec1c3498416b5bdedbc1619121a5e1b",
+              "value": 3.0,
+              "units": "SIX stored code 1–9; legend unverified; zero is NoData",
+              "interpretation": "Local uint8 rasters contradict previous 0–10000 index description; do not rank or convert to percentage",
+              "resolution_degrees": [
+                0.08333333333333333,
+                0.08333333333333333
+              ],
+              "management": "irrigated high inputs",
+              "applicability": "Management scenario not confirmed for parcel; no automatic score"
+            }
+          ],
+          "excluded": "YCX/WDE/CYL: unresolved units; LT5: not a crop suitability index; empty files unusable"
+        },
+        "water": {
+          "status": "unknown",
+          "rainfall_mm": null,
+          "irrigation_declared": null,
+          "reason": "No verified seasonal crop demand, effective rainfall, irrigation efficiency or soil water storage; annual EcoCrop rainfall bounds are not seasonal requirements"
+        },
+        "required": [
+          "verified local crop calendar and taxon/zone mapping",
+          "seasonal water balance",
+          "verified family/previous-crop transition constraints",
+          "soil nutrient balance",
+          "objective and costs"
+        ]
+      },
+      {
+        "crop": "Glycine max",
+        "status": "insufficiently_documented",
+        "climate": {
+          "rainfall_mm": null,
+          "reason": "Harvest date unknown"
+        },
+        "calendar": {
+          "status": "unverified_plan",
+          "source": "farmer",
+          "reason": "Valid proposed dates do not verify local agronomic calendar"
+        },
+        "factors": [],
+        "gaez": {
+          "source": "FAO GAEZ V5",
+          "climate_lineage": "AgERA5",
+          "period": "2001–2020",
+          "use": "context only; not additive evidence or parcel prediction",
+          "layers": [
+            {
+              "path": "data/raw/gaez/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.SOY.HRLM.tif",
+              "sha256": "b6023d4ff3059d2211106707649cd1cc43cd88001fbe8fc35f5661a227c8d2b6",
+              "value": 8.0,
+              "units": "SIX stored code 1–9; legend unverified; zero is NoData",
+              "interpretation": "Local uint8 rasters contradict previous 0–10000 index description; do not rank or convert to percentage",
+              "resolution_degrees": [
+                0.08333333333333333,
+                0.08333333333333333
+              ],
+              "management": "rainfed high inputs",
+              "applicability": "Management scenario not confirmed for parcel; no automatic score"
+            },
+            {
+              "path": "data/raw/gaez/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.SOY.HILM.tif",
+              "sha256": "a8c40e8408300752f09954f54236266029bd62433ced431a60b4478ee3821222",
+              "value": 2.0,
+              "units": "SIX stored code 1–9; legend unverified; zero is NoData",
+              "interpretation": "Local uint8 rasters contradict previous 0–10000 index description; do not rank or convert to percentage",
+              "resolution_degrees": [
+                0.08333333333333333,
+                0.08333333333333333
+              ],
+              "management": "irrigated high inputs",
+              "applicability": "Management scenario not confirmed for parcel; no automatic score"
+            }
+          ],
+          "excluded": "YCX/WDE/CYL: unresolved units; LT5: not a crop suitability index; empty files unusable"
+        },
+        "water": {
+          "status": "unknown",
+          "rainfall_mm": null,
+          "irrigation_declared": null,
+          "reason": "No verified seasonal crop demand, effective rainfall, irrigation efficiency or soil water storage; annual EcoCrop rainfall bounds are not seasonal requirements"
+        },
+        "required": [
+          "verified local crop calendar and taxon/zone mapping",
+          "seasonal water balance",
+          "verified family/previous-crop transition constraints",
+          "soil nutrient balance",
+          "objective and costs"
+        ]
+      },
+      {
+        "crop": "Triticum aestivum",
+        "status": "insufficiently_documented",
+        "climate": {
+          "rainfall_mm": null,
+          "reason": "Harvest date unknown"
+        },
+        "calendar": {
+          "status": "unverified_plan",
+          "source": "farmer",
+          "reason": "Valid proposed dates do not verify local agronomic calendar"
+        },
+        "factors": [],
+        "gaez": {
+          "source": "FAO GAEZ V5",
+          "climate_lineage": "AgERA5",
+          "period": "2001–2020",
+          "use": "context only; not additive evidence or parcel prediction",
+          "layers": [
+            {
+              "path": "data/raw/gaez/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.WHE.HRLM.tif",
+              "sha256": "090b6b3d25cf2ed3407949a26ee667d6b4ce1f169ba9576bf4ebac8def04bc31",
+              "value": 4.0,
+              "units": "SIX stored code 1–9; legend unverified; zero is NoData",
+              "interpretation": "Local uint8 rasters contradict previous 0–10000 index description; do not rank or convert to percentage",
+              "resolution_degrees": [
+                0.08333333333333333,
+                0.08333333333333333
+              ],
+              "management": "rainfed high inputs",
+              "applicability": "Management scenario not confirmed for parcel; no automatic score"
+            },
+            {
+              "path": "data/raw/gaez/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.WHE.HILM.tif",
+              "sha256": "49b83c9797b47ed629b720a140542be28e672304640c86091f051ae8d0d0cb17",
+              "value": 3.0,
+              "units": "SIX stored code 1–9; legend unverified; zero is NoData",
+              "interpretation": "Local uint8 rasters contradict previous 0–10000 index description; do not rank or convert to percentage",
+              "resolution_degrees": [
+                0.08333333333333333,
+                0.08333333333333333
+              ],
+              "management": "irrigated high inputs",
+              "applicability": "Management scenario not confirmed for parcel; no automatic score"
+            }
+          ],
+          "excluded": "YCX/WDE/CYL: unresolved units; LT5: not a crop suitability index; empty files unusable"
+        },
+        "water": {
+          "status": "unknown",
+          "rainfall_mm": null,
+          "irrigation_declared": null,
+          "reason": "No verified seasonal crop demand, effective rainfall, irrigation efficiency or soil water storage; annual EcoCrop rainfall bounds are not seasonal requirements"
+        },
+        "required": [
+          "verified local crop calendar and taxon/zone mapping",
+          "seasonal water balance",
+          "verified family/previous-crop transition constraints",
+          "soil nutrient balance",
+          "objective and costs"
+        ]
+      }
+    ],
+    "comparison": {
+      "mode": "side-by-side factors only",
+      "ranking": null,
+      "reason": "No common verified water/calendar constraints"
+    },
+    "rotation_sequence": null
+  }
+}

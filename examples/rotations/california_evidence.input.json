@@ -1,0 +1,24 @@
+{
+  "context": "Real NASA POWER/GPM point available locally (36.59, -119.52, San Joaquin Valley, CA). Seasons and candidates are an evaluation horizon, not farmer records. No farmer declarations supplied: the system must abstain and list what it needs.",
+  "parcel": {
+    "latitude": 36.59,
+    "longitude": -119.52,
+    "current_crop": null,
+    "previous_crops": [],
+    "sowing_date": "2023-03-01",
+    "horizon_end": "2023-11-30",
+    "soil": {},
+    "candidates": [
+      {"crop": "Zea mays"},
+      {"crop": "Glycine max"},
+      {"crop": "Triticum aestivum"}
+    ],
+    "assumptions": {"screen_season_mean_temperature": true}
+  },
+  "seasons": [
+    {"start": "2023-03-01", "end": "2023-06-30"},
+    {"start": "2023-07-01", "end": "2023-11-30"}
+  ],
+  "farmer": {"country_iso2": "US"},
+  "objectives": ["min_irrigation"]
+}

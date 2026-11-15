@@ -1,0 +1,58 @@
+{
+  "context": "Real NASA POWER point (36.59, -119.52). FAO-56 row choices are demonstration selections that need agronomist confirmation: maize = Table 11 'Maize (grain)' April 'Spain (spr, sum.); Calif.'; wheat = 'Winter Wheat' December 'Calif., USA' with Table 12 non-frozen soils. Maize Kc ini computed with FAO-56 Annex 7 assuming a declared rainfed initial stage. No efficiency, soil water or availability declared, so water stays unknown but the computed ETc interval is reported.",
+  "parcel": {
+    "latitude": 36.59,
+    "longitude": -119.52,
+    "current_crop": null,
+    "previous_crops": [],
+    "sowing_date": "2023-04-01",
+    "horizon_end": "2024-05-31",
+    "soil": {},
+    "candidates": [
+      {
+        "crop": "Zea mays"
+      },
+      {
+        "crop": "Glycine max"
+      },
+      {
+        "crop": "Triticum aestivum"
+      }
+    ],
+    "assumptions": {
+      "screen_season_mean_temperature": true
+    }
+  },
+  "seasons": [
+    {
+      "start": "2023-04-01",
+      "end": "2023-08-31"
+    },
+    {
+      "start": "2023-12-01",
+      "end": "2024-05-31"
+    }
+  ],
+  "farmer": {
+    "country_iso2": "US",
+    "fao56": {
+      "Zea mays": {
+        "table11_id": "T11-mz-5",
+        "table12_label": "Maize, Field (grain)",
+        "provenance": "Demonstration selection; Table 11 region text includes 'Calif.'; needs agronomist confirmation",
+        "initial_irrigation": {
+          "events": [],
+          "provenance": "Demonstration: no irrigation during initial stage (Kc ini computed from POWER rain, FAO-56 Annex 7); needs farmer confirmation"
+        }
+      },
+      "Triticum aestivum": {
+        "table11_id": "T11-ww-1",
+        "table12_label": "Winter Wheat - with non-frozen soils",
+        "provenance": "Demonstration selection; Table 11 region 'Calif., USA'; winter type and non-frozen soils need agronomist confirmation"
+      }
+    }
+  },
+  "objectives": [
+    "min_irrigation"
+  ]
+}

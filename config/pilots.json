@@ -1,0 +1,11 @@
+{
+ "note": "Puntos piloto de la demo. El motor funciona en cualquier coordenada; esta lista solo fija los puntos que se descargan y perfilan por defecto. Coordenadas registradas en data/integrated/locations.parquet, para que POWER, GPM y NDVI coincidan en el mismo punto.",
+ "pilots": [
+  {"name": "piura_1", "label": "Huancabamba, Piura (PE)", "latitude": -5.24, "longitude": -79.45},
+  {"name": "piura_2", "label": "Piura sur (PE)", "latitude": -5.34, "longitude": -79.42},
+  {"name": "piura_3", "label": "Piura norte (PE)", "latitude": -4.64, "longitude": -79.72},
+  {"name": "iowa", "label": "Iowa central (US)", "latitude": 42.03, "longitude": -93.62},
+  {"name": "kenia", "label": "Nakuru (KE)", "latitude": -0.33, "longitude": 35.94},
+  {"name": "california", "label": "Valle Central (US)", "latitude": 36.95, "longitude": -120.28}
+ ]
+}

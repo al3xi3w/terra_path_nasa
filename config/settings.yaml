@@ -1,0 +1,8 @@
+max_bytes: 5000000000
+start: '2021-01-01'
+end: '2025-12-31'
+power_variables: [T2M, T2M_MAX, T2M_MIN, PRECTOTCORR, RH2M, ALLSKY_SFC_SW_DWN, WS2M]
+gaez_prefix: DATA/GAEZ-V5/MAPSET/RES01-LT5/
+
+gaez_variables: [RES05-SIX, RES05-YCX, RES02-WDE, RES02-CYL]
+gaez_crops: [MZE, SOY, WHE]
