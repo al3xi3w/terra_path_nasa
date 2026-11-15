@@ -13,6 +13,7 @@ window.STRINGS = {
     tagline: 'We help you choose what to plant next, using satellite data.',
     choose_language: 'Choose your language',
     lang_pending: '{lang} is not available yet. We show the app in English for now.',
+    mt_note: 'Machine translation. If something is unclear, ask your farm adviser.',
     works_offline: 'Works offline',
     see_more: 'See more',
     select_placeholder: 'Select...',
@@ -213,6 +214,7 @@ window.STRINGS = {
   },
   es: {
     lang_pending: '{lang} todavía no está disponible. Por ahora mostramos la app en inglés.',
+    mt_note: 'Traducción automática. Si algo no se entiende, consulta con tu técnico agrario.',
     works_offline: 'Funciona sin conexión',
     see_more: 'Ver más',
     select_placeholder: 'Elige...',

@@ -168,9 +168,10 @@
   function mainButton(label, action, disabled, extra) {
     return `<div class="btn-main">${extra || ''}<button data-act="${action}" ${disabled ? 'disabled' : ''}>${esc(label)}</button></div>`;
   }
-  function back(action) { return `<button class="back" data-act="${action}" data-dir="back">← ${esc(t('back'))}</button>`; }
+  function back(action) { return `<button class="back" data-act="${action}" data-dir="back"><span class="flip">←</span> ${esc(t('back'))}</button>`; }
   function langName() { return (LANGS.find(([code]) => code === state.lang) || [])[1] || state.lang; }
   function langNote() {
+    if ((window.MACHINE_TRANSLATED || []).includes(state.lang)) return `<div class="warn small" role="note">${esc(t('mt_note'))}</div>`;
     if (translated()) return '';
     return `<div class="warn" role="note">${esc(t('lang_pending', { lang: langName() }))}</div>`;
   }
@@ -399,7 +400,7 @@
           <div class="kind">${esc(t(r.kind === 'con_descanso' ? 'kind_rest' : 'kind_three'))}</div>
           ${strip(seq)}
           ${axisBars(r)}${irrigation}
-          <div class="see">${esc(t('why_link'))} →</div>
+          <div class="see">${esc(t('why_link'))} <span class="flip">→</span></div>
         </article>`;
       }).join('');
       if (p.routes.length < 3) body = `<p class="soft small">${esc(t(p.routes.length === 1 ? 'routes_few_1' : 'routes_few', { n: p.routes.length }))}</p>` + body;
@@ -921,6 +922,7 @@
     if (state.view === 'routes' && !state.care) state.view = pilot() ? 'care' : 'where';
     if (['why', 'calendar'].includes(state.view) && !pilot().routes[state.route]) state.view = 'routes';
     document.documentElement.lang = translated() ? state.lang : 'en';
+    document.documentElement.dir = translated() && state.lang === 'ar' ? 'rtl' : 'ltr';
     const withNav = !!user() && !['home', 'login', 'where', 'what', 'care'].includes(state.view);
     const withAi = withNav && AI_VIEWS.includes(state.view);
     if (!withAi) aiOpen = false;

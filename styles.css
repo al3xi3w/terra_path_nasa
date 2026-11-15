@@ -424,3 +424,9 @@ body.has-nav .btn-main { bottom: calc(66px + env(safe-area-inset-bottom)); }
 }
 .sheet h3 { margin: 0 0 8px; font-size: 20px; }
 .sheet p { margin: 0 0 16px; color: var(--ink-soft); }
+
+/* Árabe: se lee de derecha a izquierda, así que las flechas de secuencia y de navegación se voltean */
+[dir="rtl"] .arrow, [dir="rtl"] .flip { display: inline-block; transform: scaleX(-1); }
+[dir="rtl"] .route .tag { right: auto; left: 10px; }
+[dir="rtl"] .option .ok { right: auto; left: 12px; }
+[dir="rtl"] .place, [dir="rtl"] .option, [dir="rtl"] .lang-btn, [dir="rtl"] .lang-menu li button { text-align: right; }
