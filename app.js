@@ -986,6 +986,13 @@
 
   render();
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-    navigator.serviceWorker.register('sw.js').catch(() => { /* sin caché: la app sigue funcionando */ });
+    // Cuando se instala una versión nueva, la pantalla se recarga sola una vez para mostrarla.
+    const hadController = !!navigator.serviceWorker.controller;
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (hadController && !reloaded) { reloaded = true; location.reload(); }
+    });
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+      .then(reg => reg.update()).catch(() => { /* sin caché: la app sigue funcionando */ });
   }
 })();
