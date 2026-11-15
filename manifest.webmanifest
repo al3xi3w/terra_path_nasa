@@ -1,0 +1,38 @@
+{
+  "name": "TerraPath",
+  "short_name": "TerraPath",
+  "description": "We help you choose what to plant next, using satellite data.",
+  "lang": "en",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F3F8EF",
+  "theme_color": "#00733A",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "id": "./",
+  "scope": "./",
+  "orientation": "portrait"
+}
