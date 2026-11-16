@@ -141,7 +141,7 @@ Direct links to a screen are useful for demos, for example:
 
 ## Team
 
-Riki Dos Santos · Mia W. · Mafer · Mauricio · Mia H.
+ Mia Wood · María Fernanda Lazón · Mauricio Terán · Mia Hurtado
 
 ## Acknowledgements and licences
 
